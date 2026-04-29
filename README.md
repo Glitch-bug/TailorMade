@@ -1,6 +1,6 @@
 # tailor_made
 
-A new Flutter project.
+A new Flutter project meant to help tailors keep track of the customers, jobs and expenses.
 
 ## Getting Started
 
