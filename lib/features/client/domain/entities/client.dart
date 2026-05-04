@@ -1,7 +1,8 @@
 import 'package:tailor_made/core/constants/enums.dart';
+import 'package:uuid/uuid.dart';
 
 class Client {
-  final int id;
+  final String id;
   final String firstName;
   final String lastName;
   final String phoneNumber;

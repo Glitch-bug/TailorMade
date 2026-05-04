@@ -21,7 +21,7 @@ ClientModel _$ClientModelFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$ClientModel {
   @HiveField(0)
-  int get id => throw _privateConstructorUsedError;
+  String get id => throw _privateConstructorUsedError;
   @HiveField(1)
   String get firstName => throw _privateConstructorUsedError;
   @HiveField(2)
@@ -54,7 +54,7 @@ abstract class $ClientModelCopyWith<$Res> {
       _$ClientModelCopyWithImpl<$Res, ClientModel>;
   @useResult
   $Res call(
-      {@HiveField(0) int id,
+      {@HiveField(0) String id,
       @HiveField(1) String firstName,
       @HiveField(2) String lastName,
       @HiveField(3) String phoneNumber,
@@ -92,7 +92,7 @@ class _$ClientModelCopyWithImpl<$Res, $Val extends ClientModel>
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as int,
+              as String,
       firstName: null == firstName
           ? _value.firstName
           : firstName // ignore: cast_nullable_to_non_nullable
@@ -134,7 +134,7 @@ abstract class _$$ClientModelImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {@HiveField(0) int id,
+      {@HiveField(0) String id,
       @HiveField(1) String firstName,
       @HiveField(2) String lastName,
       @HiveField(3) String phoneNumber,
@@ -170,7 +170,7 @@ class __$$ClientModelImplCopyWithImpl<$Res>
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as int,
+              as String,
       firstName: null == firstName
           ? _value.firstName
           : firstName // ignore: cast_nullable_to_non_nullable
@@ -222,7 +222,7 @@ class _$ClientModelImpl extends _ClientModel {
 
   @override
   @HiveField(0)
-  final int id;
+  final String id;
   @override
   @HiveField(1)
   final String firstName;
@@ -292,7 +292,7 @@ class _$ClientModelImpl extends _ClientModel {
 
 abstract class _ClientModel extends ClientModel {
   const factory _ClientModel(
-      {@HiveField(0) required final int id,
+      {@HiveField(0) required final String id,
       @HiveField(1) required final String firstName,
       @HiveField(2) required final String lastName,
       @HiveField(3) required final String phoneNumber,
@@ -307,7 +307,7 @@ abstract class _ClientModel extends ClientModel {
 
   @override
   @HiveField(0)
-  int get id;
+  String get id;
   @override
   @HiveField(1)
   String get firstName;

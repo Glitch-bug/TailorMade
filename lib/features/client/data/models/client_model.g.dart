@@ -17,7 +17,7 @@ class ClientModelAdapter extends TypeAdapter<ClientModel> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return ClientModel(
-      id: fields[0] as int,
+      id: fields[0] as String,
       firstName: fields[1] as String,
       lastName: fields[2] as String,
       phoneNumber: fields[3] as String,
@@ -67,7 +67,7 @@ class ClientModelAdapter extends TypeAdapter<ClientModel> {
 
 _$ClientModelImpl _$$ClientModelImplFromJson(Map<String, dynamic> json) =>
     _$ClientModelImpl(
-      id: (json['id'] as num).toInt(),
+      id: json['id'] as String,
       firstName: json['firstName'] as String,
       lastName: json['lastName'] as String,
       phoneNumber: json['phoneNumber'] as String,
