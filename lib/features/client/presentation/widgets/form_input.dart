@@ -5,13 +5,15 @@ import 'package:tailor_made/features/client/presentation/widgets/label.dart';
 
 class FormInput extends StatelessWidget {
   final String label;
-  String? hintText;
+  final String? hintText;
   final TextInputType inputType;
+  final TextEditingController? controller;
 
-  FormInput({
+  const FormInput({
     required this.label,
     this.hintText,
     this.inputType = TextInputType.text,
+    this.controller,
     super.key,
   });
 
@@ -29,14 +31,14 @@ class FormInput extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(vertical:6.0),
             child: TextField(
-
+              controller: controller,
               keyboardType: inputType,
               inputFormatters: (inputType == TextInputType.number)?[
                 FilteringTextInputFormatter.digitsOnly,
               ]:[],
               decoration: InputDecoration(
                 hintText: hintText,
-                hintStyle: TextStyle(
+                hintStyle: const TextStyle(
                   color: AppPallete.darkGreyColor,
                 ),
               )

@@ -4,9 +4,15 @@ import 'package:tailor_made/features/client/presentation/widgets/label.dart';
 class FormDropDownMenu extends StatelessWidget {
   final String label;
   final List<Map<String,String>> items;
+  final String? hintText;
+  final ValueChanged? onSelected;
+  final TextEditingController? controller;
   const FormDropDownMenu({
     required this.items,
     required this.label,
+    this.controller,
+    this.hintText,
+    this.onSelected,
     super.key,
   });
 
@@ -20,17 +26,16 @@ class FormDropDownMenu extends StatelessWidget {
           Label(label:label),
           Padding(
             padding: const EdgeInsets.symmetric(vertical:6.0),
-            child: DropdownButtonFormField(
-              onChanged: (newValue) {},
-              value: items.first["value"],
-              items: items.map((item) => DropdownMenuItem(
-                  value: item["value"],
-                  child: Text(
-                    item["label"] ?? "",
-                  ),
-                )
+            child: DropdownMenu(
+              hintText: hintText,
+              controller: controller,
+              onSelected: onSelected,
+              dropdownMenuEntries:items.map((item) => DropdownMenuEntry(
+                label: item["label"] ?? "",
+                value: item["value"]
+    
               
-              ).toList().cast(),
+              )).toList().cast(),
             ),
           ),
         ],

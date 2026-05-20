@@ -1,5 +1,4 @@
 import 'package:tailor_made/core/constants/enums.dart';
-import 'package:uuid/uuid.dart';
 
 class Client {
   final String id;

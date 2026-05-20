@@ -1,12 +1,11 @@
 import 'package:hive/hive.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:tailor_made/core/constants/enums.dart';
-import 'package:tailor_made/core/utils/uuid_converter.dart';
 import 'package:tailor_made/features/client/domain/entities/client.dart';
-import 'package:uuid/uuid.dart';
 
-part 'client_model.g.dart';
 part 'client_model.freezed.dart';
+part 'client_model.g.dart';
+
 
 @freezed
 @HiveType(typeId: 1)

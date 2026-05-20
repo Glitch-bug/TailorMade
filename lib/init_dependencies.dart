@@ -1,6 +1,7 @@
 import 'package:get_it/get_it.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:tailor_made/core/constants/enums.dart';
 import 'package:tailor_made/features/client/data/models/client_model.dart';
 import 'package:tailor_made/features/client/data/datasources/client_local_datasource.dart';
 import 'package:tailor_made/features/client/domain/repositories/client_repository.dart';
@@ -14,20 +15,23 @@ final serviceLocator = GetIt.instance;
 
 
 Future<void> initDependencies() async {
-  _initClient();
+
 
   String hivePath = (await getApplicationDocumentsDirectory()).path;
   Hive.init(hivePath);
 
+  Hive.registerAdapter(GenderAdapter());
   Hive.registerAdapter(ClientModelAdapter());
 
-  Box hiveBox = await Hive.openBox('clients');
+  Box<ClientModel> clientBox = await Hive.openBox<ClientModel>('clients');
+
+  serviceLocator.registerLazySingleton(() => clientBox);
 
   Uuid uuid = const Uuid();
 
   serviceLocator.registerLazySingleton(() => uuid);
-  serviceLocator.registerLazySingleton(() => hiveBox);
 
+  _initClient();
 }
 
 void _initClient() {
