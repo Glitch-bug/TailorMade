@@ -1,6 +1,7 @@
 import 'package:tailor_made/features/client/domain/entities/client.dart';
 import 'package:tailor_made/features/client/domain/usecases/save_client.dart';
 import 'package:tailor_made/features/client/domain/usecases/fetch_clients.dart';
+import 'package:tailor_made/features/client/domain/usecases/erase_client.dart';
 import 'package:tailor_made/core/usecase/usecase.dart';
 import 'package:tailor_made/core/constants/enums.dart';
 import 'package:flutter/material.dart';
@@ -11,15 +12,19 @@ part 'client_state.dart';
 class ClientBloc extends Bloc<ClientEvent, ClientState> {
   final SaveClient _saveClient;
   final FetchClients _fetchClients;
+  final EraseClient _eraseClient;
   ClientBloc({
     required SaveClient saveClient,
     required FetchClients fetchClients,
+    required EraseClient eraseClient,
   })  : _fetchClients = fetchClients,
         _saveClient = saveClient,
+        _eraseClient = eraseClient,
         super(ClientInitial()) {
     on<ClientEvent>((event, emit) => emit(ClientLoading()));
     on<ClientSave>(_onClientSave);
     on<ClientFetchAllClients>(_onClientsFetch);
+    on<ClientErase>(_onClientErase);
   }
 
   void _onClientSave(
@@ -54,5 +59,22 @@ class ClientBloc extends Bloc<ClientEvent, ClientState> {
       (l) => emit(ClientFailure(l.message)),
       (r) => emit(ClientDisplaySuccess(r)),
     );
+  }
+
+  void _onClientErase(
+    ClientErase event,
+    Emitter<ClientState> emit,
+  ) async {
+    final res = await _eraseClient(
+      IdParams(
+        id: event.id
+      )
+    );
+
+    res.fold(
+      (l) => emit(ClientFailure(l.message)),
+      (r) => emit(ClientDeleteSucces()),
+    );
+
   }
 }

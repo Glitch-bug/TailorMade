@@ -43,5 +43,19 @@ class ClientRepositoryImpl implements ClientRepository {
     }
     
   }
+
+
+  @override 
+  Future<Either<Failure, void>> eraseClient({required String id}) async {
+    try {
+      await clientLocalDataSource.deleteClient(id: id);
+      return right(null);
+    }on LocalStorageException catch (e){
+      return left(Failure(e.message));
+    }
+  } 
+
+
+
   
 }

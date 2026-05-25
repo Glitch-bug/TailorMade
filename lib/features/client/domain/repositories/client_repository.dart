@@ -14,4 +14,6 @@ abstract interface class ClientRepository {
     required String email,
     required String address,
   });
+
+  Future<Either<Failure, void>> eraseClient({required String id});
 }

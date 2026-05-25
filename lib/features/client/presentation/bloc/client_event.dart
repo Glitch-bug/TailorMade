@@ -23,3 +23,11 @@ final class ClientSave extends ClientEvent {
 
 
 final class ClientFetchAllClients extends ClientEvent{}
+
+final class ClientErase extends ClientEvent{
+  final String id;
+
+  ClientErase({
+    required this.id
+  });
+}

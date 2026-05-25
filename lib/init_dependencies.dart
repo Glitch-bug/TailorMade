@@ -4,6 +4,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:tailor_made/core/constants/enums.dart';
 import 'package:tailor_made/features/client/data/models/client_model.dart';
 import 'package:tailor_made/features/client/data/datasources/client_local_datasource.dart';
+import 'package:tailor_made/features/client/domain/usecases/erase_client.dart';
 import 'package:tailor_made/features/client/domain/repositories/client_repository.dart';
 import 'package:tailor_made/features/client/data/repositories/client_repository_impl.dart';
 import 'package:tailor_made/features/client/domain/usecases/save_client.dart';
@@ -65,11 +66,18 @@ void _initClient() {
       )
     )
 
+    ..registerFactory(
+      () => EraseClient(
+        serviceLocator()
+      )
+    )
+
     //bloc 
     ..registerLazySingleton(
       () => ClientBloc(
         saveClient: serviceLocator(),
-        fetchClients: serviceLocator()
+        fetchClients: serviceLocator(),
+        eraseClient: serviceLocator(),
       )
     );
 }

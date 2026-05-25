@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tailor_made/core/theme/app_pallete.dart';
+import 'package:tailor_made/features/client/domain/entities/client.dart';
 import 'package:tailor_made/features/client/presentation/widgets/client_card.dart';
+import 'package:tailor_made/features/client/presentation/widgets/client_details_panel.dart';
 import 'package:tailor_made/features/client/presentation/bloc/client_bloc.dart';
 import 'package:tailor_made/features/client/presentation/pages/add_client_page.dart';
 
@@ -17,6 +19,21 @@ class ClientsListPage extends StatefulWidget {
 }
 
 class _ClientsListPageState extends State<ClientsListPage> {
+  Client? selected;
+
+  void deleteClient({required String id}) {
+    context.read<ClientBloc>().add(ClientErase(id: id));
+  }
+
+  void selectClient({required Client client}) {
+    selected = client;
+    setState((){});
+  }
+
+  void getClients() {
+    context.read<ClientBloc>().add(ClientFetchAllClients());
+  }
+
   @override
   void initState() {
     super.initState();
@@ -38,7 +55,11 @@ class _ClientsListPageState extends State<ClientsListPage> {
         ]),
         body: BlocConsumer<ClientBloc, ClientState>(
           listener: (context, state) {
-            // TODO: implement listener
+            if (state is ClientDeleteSucces) {
+              context.read<ClientBloc>().add(ClientFetchAllClients());
+            } else if (state is ClientSaveSuccess) {
+              context.read<ClientBloc>().add(ClientFetchAllClients());
+            }
           },
           builder: (context, state) {
             if (state is ClientDisplaySuccess && state.clients.isEmpty) {
@@ -65,6 +86,7 @@ class _ClientsListPageState extends State<ClientsListPage> {
                     child: Container(
                       height: double.infinity,
                       color: AppPallete.backgroundColor2,
+                      child: (selected != null)? ClientDetailsPanel(client: selected!): const SizedBox(),
                     ),
                   ),
                   Expanded(
@@ -73,7 +95,15 @@ class _ClientsListPageState extends State<ClientsListPage> {
                       itemCount: state.clients.length,
                       itemBuilder: (context, index) {
                         final client = state.clients[index];
-                        return ClientCard(client: client);
+                        return ClientCard(
+                          client: client,
+                          delete: () {
+                            deleteClient(id: client.id);
+                          },
+                          onTap: () {
+                            selectClient(client: client);
+                          },
+                        );
                       },
                     ),
                   ),
@@ -87,5 +117,3 @@ class _ClientsListPageState extends State<ClientsListPage> {
     );
   }
 }
-
-

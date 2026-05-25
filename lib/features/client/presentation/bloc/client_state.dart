@@ -12,9 +12,12 @@ final class ClientFailure extends ClientState {
   ClientFailure(this.error);
 }
 
-final class ClientSaveSuccess extends ClientState {}
+final class ClientSuccess extends ClientState {}
+final class ClientSaveSuccess extends ClientSuccess {}
 
-final class ClientDisplaySuccess extends ClientState {
+final class ClientDisplaySuccess extends ClientSuccess {
   final List<Client> clients;
   ClientDisplaySuccess(this.clients);
 }
+
+final class ClientDeleteSucces extends ClientSuccess {}

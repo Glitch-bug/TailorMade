@@ -114,8 +114,6 @@ class _AddClientPageState extends State<AddClientPage> {
                                 setState(() {
                                   gender = value;
                                 });
-
-                                print(gender);
                               },
                               items: [
                                 {

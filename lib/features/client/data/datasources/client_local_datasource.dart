@@ -5,6 +5,7 @@ import 'package:hive/hive.dart';
 abstract class ClientLocalDataSource {
   Future<void> saveClient({required ClientModel client});
   List<ClientModel> fetchClients();
+  Future<void> deleteClient({required String id});
 }
 
 
@@ -30,4 +31,15 @@ class ClientLocalDataSourceImpl implements ClientLocalDataSource {
       throw LocalStorageException(e.toString());
     }
   }
+
+  @override 
+  Future<void> deleteClient({required String id})async{
+    try {
+      await box.delete(id);
+    } catch(e) {
+      throw LocalStorageException(e.toString());
+    }
+  }
+
+
 }
