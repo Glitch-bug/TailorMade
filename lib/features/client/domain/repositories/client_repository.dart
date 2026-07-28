@@ -16,4 +16,7 @@ abstract interface class ClientRepository {
   });
 
   Future<Either<Failure, void>> eraseClient({required String id});
+
+  Future<Either<Failure, void>> saveClientMeasurements({required String id, required Map<String, dynamic> measurements});
+  Future<Either<Failure, void>> editClientMeasurements({required String id, required Map<String, dynamic>? measurements});
 }

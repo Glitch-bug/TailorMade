@@ -36,6 +36,8 @@ mixin _$ClientModel {
   String get address => throw _privateConstructorUsedError;
   @HiveField(7)
   DateTime get dateAdded => throw _privateConstructorUsedError;
+  @HiveField(8)
+  Map<String, dynamic>? get measurements => throw _privateConstructorUsedError;
 
   /// Serializes this ClientModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -61,7 +63,8 @@ abstract class $ClientModelCopyWith<$Res> {
       @HiveField(4) Gender gender,
       @HiveField(5) String email,
       @HiveField(6) String address,
-      @HiveField(7) DateTime dateAdded});
+      @HiveField(7) DateTime dateAdded,
+      @HiveField(8) Map<String, dynamic>? measurements});
 }
 
 /// @nodoc
@@ -87,6 +90,7 @@ class _$ClientModelCopyWithImpl<$Res, $Val extends ClientModel>
     Object? email = null,
     Object? address = null,
     Object? dateAdded = null,
+    Object? measurements = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -121,6 +125,10 @@ class _$ClientModelCopyWithImpl<$Res, $Val extends ClientModel>
           ? _value.dateAdded
           : dateAdded // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      measurements: freezed == measurements
+          ? _value.measurements
+          : measurements // ignore: cast_nullable_to_non_nullable
+              as Map<String, dynamic>?,
     ) as $Val);
   }
 }
@@ -141,7 +149,8 @@ abstract class _$$ClientModelImplCopyWith<$Res>
       @HiveField(4) Gender gender,
       @HiveField(5) String email,
       @HiveField(6) String address,
-      @HiveField(7) DateTime dateAdded});
+      @HiveField(7) DateTime dateAdded,
+      @HiveField(8) Map<String, dynamic>? measurements});
 }
 
 /// @nodoc
@@ -165,6 +174,7 @@ class __$$ClientModelImplCopyWithImpl<$Res>
     Object? email = null,
     Object? address = null,
     Object? dateAdded = null,
+    Object? measurements = freezed,
   }) {
     return _then(_$ClientModelImpl(
       id: null == id
@@ -199,6 +209,10 @@ class __$$ClientModelImplCopyWithImpl<$Res>
           ? _value.dateAdded
           : dateAdded // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      measurements: freezed == measurements
+          ? _value._measurements
+          : measurements // ignore: cast_nullable_to_non_nullable
+              as Map<String, dynamic>?,
     ));
   }
 }
@@ -214,8 +228,10 @@ class _$ClientModelImpl extends _ClientModel {
       @HiveField(4) required this.gender,
       @HiveField(5) required this.email,
       @HiveField(6) required this.address,
-      @HiveField(7) required this.dateAdded})
-      : super._();
+      @HiveField(7) required this.dateAdded,
+      @HiveField(8) final Map<String, dynamic>? measurements})
+      : _measurements = measurements,
+        super._();
 
   factory _$ClientModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$ClientModelImplFromJson(json);
@@ -244,10 +260,20 @@ class _$ClientModelImpl extends _ClientModel {
   @override
   @HiveField(7)
   final DateTime dateAdded;
+  final Map<String, dynamic>? _measurements;
+  @override
+  @HiveField(8)
+  Map<String, dynamic>? get measurements {
+    final value = _measurements;
+    if (value == null) return null;
+    if (_measurements is EqualUnmodifiableMapView) return _measurements;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableMapView(value);
+  }
 
   @override
   String toString() {
-    return 'ClientModel(id: $id, firstName: $firstName, lastName: $lastName, phoneNumber: $phoneNumber, gender: $gender, email: $email, address: $address, dateAdded: $dateAdded)';
+    return 'ClientModel(id: $id, firstName: $firstName, lastName: $lastName, phoneNumber: $phoneNumber, gender: $gender, email: $email, address: $address, dateAdded: $dateAdded, measurements: $measurements)';
   }
 
   @override
@@ -266,13 +292,24 @@ class _$ClientModelImpl extends _ClientModel {
             (identical(other.email, email) || other.email == email) &&
             (identical(other.address, address) || other.address == address) &&
             (identical(other.dateAdded, dateAdded) ||
-                other.dateAdded == dateAdded));
+                other.dateAdded == dateAdded) &&
+            const DeepCollectionEquality()
+                .equals(other._measurements, _measurements));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, id, firstName, lastName,
-      phoneNumber, gender, email, address, dateAdded);
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      firstName,
+      lastName,
+      phoneNumber,
+      gender,
+      email,
+      address,
+      dateAdded,
+      const DeepCollectionEquality().hash(_measurements));
 
   /// Create a copy of ClientModel
   /// with the given fields replaced by the non-null parameter values.
@@ -292,14 +329,16 @@ class _$ClientModelImpl extends _ClientModel {
 
 abstract class _ClientModel extends ClientModel {
   const factory _ClientModel(
-      {@HiveField(0) required final String id,
-      @HiveField(1) required final String firstName,
-      @HiveField(2) required final String lastName,
-      @HiveField(3) required final String phoneNumber,
-      @HiveField(4) required final Gender gender,
-      @HiveField(5) required final String email,
-      @HiveField(6) required final String address,
-      @HiveField(7) required final DateTime dateAdded}) = _$ClientModelImpl;
+          {@HiveField(0) required final String id,
+          @HiveField(1) required final String firstName,
+          @HiveField(2) required final String lastName,
+          @HiveField(3) required final String phoneNumber,
+          @HiveField(4) required final Gender gender,
+          @HiveField(5) required final String email,
+          @HiveField(6) required final String address,
+          @HiveField(7) required final DateTime dateAdded,
+          @HiveField(8) final Map<String, dynamic>? measurements}) =
+      _$ClientModelImpl;
   const _ClientModel._() : super._();
 
   factory _ClientModel.fromJson(Map<String, dynamic> json) =
@@ -329,6 +368,9 @@ abstract class _ClientModel extends ClientModel {
   @override
   @HiveField(7)
   DateTime get dateAdded;
+  @override
+  @HiveField(8)
+  Map<String, dynamic>? get measurements;
 
   /// Create a copy of ClientModel
   /// with the given fields replaced by the non-null parameter values.

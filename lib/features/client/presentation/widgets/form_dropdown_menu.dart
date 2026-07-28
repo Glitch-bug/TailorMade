@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:tailor_made/core/constants/enums.dart';
 import 'package:tailor_made/features/client/presentation/widgets/label.dart';
 
-class FormDropDownMenu extends StatelessWidget {
+class FormDropDownMenu<T extends DropdownEntry> extends StatelessWidget {
   final String label;
-  final List<Map<String,String>> items;
+  final List<T> items;
   final String? hintText;
   final ValueChanged? onSelected;
   final TextEditingController? controller;
@@ -28,11 +29,12 @@ class FormDropDownMenu extends StatelessWidget {
             padding: const EdgeInsets.symmetric(vertical:6.0),
             child: DropdownMenu(
               hintText: hintText,
+              width: double.infinity,
               controller: controller,
               onSelected: onSelected,
               dropdownMenuEntries:items.map((item) => DropdownMenuEntry(
-                label: item["label"] ?? "",
-                value: item["value"]
+                label: item.title,
+                value: item.value
     
               
               )).toList().cast(),

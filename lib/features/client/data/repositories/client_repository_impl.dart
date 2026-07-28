@@ -16,7 +16,18 @@ class ClientRepositoryImpl implements ClientRepository {
   @override 
   Future<Either<Failure, void>> addClient({required String firstName, required String lastName, required String phoneNumber, required Gender gender, required String email, required String address})async{
     try {
-      await clientLocalDataSource.saveClient(client:ClientModel(
+      var bip = ClientModel(
+        id: uuid.v4(),
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+        address: address,
+        phoneNumber: phoneNumber,
+        gender: gender,
+        dateAdded: DateTime.now(),
+      );
+
+      await clientLocalDataSource.addClient(client:ClientModel(
         id: uuid.v4(),
         firstName: firstName,
         lastName: lastName,
@@ -36,7 +47,7 @@ class ClientRepositoryImpl implements ClientRepository {
   @override 
   Future<Either<Failure, List<Client>>> getClients()async{
     try {
-      List<Client> clients = clientLocalDataSource.fetchClients().map((client) => client.toEntity()).toList();
+      List<Client> clients = clientLocalDataSource.getClients().map((client) => client.toEntity()).toList();
       return right(clients);
     } on LocalStorageException catch (e){
       return left(Failure(e.message));
@@ -48,12 +59,33 @@ class ClientRepositoryImpl implements ClientRepository {
   @override 
   Future<Either<Failure, void>> eraseClient({required String id}) async {
     try {
-      await clientLocalDataSource.deleteClient(id: id);
+      await clientLocalDataSource.eraseClient(id: id);
       return right(null);
     }on LocalStorageException catch (e){
       return left(Failure(e.message));
     }
   } 
+
+  @override 
+  Future<Either<Failure, void>> saveClientMeasurements({required String id, required Map<String, dynamic> measurements}) async {
+    try {
+      await clientLocalDataSource.saveClientMeasurements(id: id, measurements: measurements);
+      return right(null);
+    } on LocalStorageException catch (e) {
+      return left(Failure(e.message));
+    }
+
+  }
+
+  @override 
+  Future<Either<Failure, void>> editClientMeasurements({required String id, required Map<String, dynamic>? measurements}) async {
+    try {
+      await clientLocalDataSource.editClientMeasurements(id: id, measurements: measurements);
+      return right(null);
+    } on LocalStorageException catch(e) {
+      return left(Failure(e.message));
+    }
+  }
 
 
 

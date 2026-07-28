@@ -30,18 +30,23 @@ class FormInput extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical:6.0),
-            child: TextField(
-              controller: controller,
-              keyboardType: inputType,
-              inputFormatters: (inputType == TextInputType.number)?[
-                FilteringTextInputFormatter.digitsOnly,
-              ]:[],
-              decoration: InputDecoration(
-                hintText: hintText,
-                hintStyle: const TextStyle(
-                  color: AppPallete.darkGreyColor,
-                ),
-              )
+            child: SizedBox(
+              height: null,
+              child: TextField(
+                controller: controller,
+                keyboardType: inputType,
+                inputFormatters: (inputType == TextInputType.number)?[
+                  FilteringTextInputFormatter.digitsOnly,
+                ]:[],
+                maxLength: 20,
+                decoration: InputDecoration(
+                  
+                  hintText: hintText,
+                  hintStyle: const TextStyle(
+                    color: AppPallete.darkGreyColor,
+                  ),
+                )
+              ),
             ),
           ),
         ],

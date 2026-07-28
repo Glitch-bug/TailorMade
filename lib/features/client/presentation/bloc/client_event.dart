@@ -31,3 +31,23 @@ final class ClientErase extends ClientEvent{
     required this.id
   });
 }
+
+final class ClientMeasurementsSave extends ClientEvent{
+  final String id;
+  final Map<String, dynamic> measurements;
+
+  ClientMeasurementsSave({
+      required this.id,
+      required this.measurements,
+    });
+}
+
+final class ClientMeasurementsEdit extends ClientEvent {
+  final String id;
+  final Map<String, dynamic>? measurements;
+
+  ClientMeasurementsEdit({
+    required this.id,
+    required this.measurements,
+  });
+}

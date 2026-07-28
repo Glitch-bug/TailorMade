@@ -9,6 +9,7 @@ class Client {
   final String email;
   final String address;
   final DateTime dateAdded;
+  final Map<String, dynamic>? measurements;
 
   Client({
     required this.id,
@@ -19,5 +20,6 @@ class Client {
     required this.email,
     required this.address,
     required this.dateAdded,
+    this.measurements,
   });
 }

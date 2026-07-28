@@ -21,6 +21,7 @@ class ClientModel with _$ClientModel {
     @HiveField(5) required String email,
     @HiveField(6) required String address,
     @HiveField(7) required DateTime dateAdded,
+    @HiveField(8) Map<String, dynamic>? measurements,
   }) = _ClientModel;
 
   factory ClientModel.fromJson(Map<String, dynamic> json) =>
@@ -36,6 +37,7 @@ class ClientModel with _$ClientModel {
       email: client.email,
       address: client.address,
       dateAdded: client.dateAdded,
+      measurements: client.measurements
     );
   }
 
@@ -48,5 +50,6 @@ class ClientModel with _$ClientModel {
         email: email,
         address: address,
         dateAdded: dateAdded,
+        measurements: measurements,
       );
 }

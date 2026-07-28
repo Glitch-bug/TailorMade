@@ -2,6 +2,7 @@ import 'package:tailor_made/features/client/domain/entities/client.dart';
 import 'package:tailor_made/features/client/domain/usecases/save_client.dart';
 import 'package:tailor_made/features/client/domain/usecases/fetch_clients.dart';
 import 'package:tailor_made/features/client/domain/usecases/erase_client.dart';
+import 'package:tailor_made/features/client/domain/usecases/save_client_measurements.dart';
 import 'package:tailor_made/core/usecase/usecase.dart';
 import 'package:tailor_made/core/constants/enums.dart';
 import 'package:flutter/material.dart';
@@ -13,18 +14,23 @@ class ClientBloc extends Bloc<ClientEvent, ClientState> {
   final SaveClient _saveClient;
   final FetchClients _fetchClients;
   final EraseClient _eraseClient;
+  final SaveClientMeasurements _saveMeasurements;
   ClientBloc({
     required SaveClient saveClient,
     required FetchClients fetchClients,
     required EraseClient eraseClient,
+    required SaveClientMeasurements saveMeasurements,
   })  : _fetchClients = fetchClients,
         _saveClient = saveClient,
         _eraseClient = eraseClient,
+        _saveMeasurements = saveMeasurements,
         super(ClientInitial()) {
     on<ClientEvent>((event, emit) => emit(ClientLoading()));
     on<ClientSave>(_onClientSave);
     on<ClientFetchAllClients>(_onClientsFetch);
     on<ClientErase>(_onClientErase);
+    on<ClientMeasurementsSave>(_onMeasurementsSave);
+    // on<ClientMeasurementsEdit>();
   }
 
   void _onClientSave(
@@ -76,5 +82,22 @@ class ClientBloc extends Bloc<ClientEvent, ClientState> {
       (r) => emit(ClientDeleteSucces()),
     );
 
+  }
+
+  void _onMeasurementsSave(
+    ClientMeasurementsSave event,
+    Emitter<ClientState> emit,
+  ) async {
+    final res = await _saveMeasurements(
+      MeasurementParams(
+        id: event.id,
+        measurements: event.measurements
+      )
+    );
+
+    res.fold(
+      (l) => emit(ClientFailure(l.message)),
+      (r) => emit(ClientMeasurementsSaveSuccess())
+    );
   }
 }

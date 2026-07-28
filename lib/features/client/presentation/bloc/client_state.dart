@@ -21,3 +21,7 @@ final class ClientDisplaySuccess extends ClientSuccess {
 }
 
 final class ClientDeleteSucces extends ClientSuccess {}
+
+final class ClientMeasurementsSaveSuccess extends ClientSaveSuccess {}
+
+final class ClientMeasurementsEditSuccess extends ClientSuccess {}

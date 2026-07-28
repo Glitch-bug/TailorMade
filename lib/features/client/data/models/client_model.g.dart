@@ -25,13 +25,14 @@ class ClientModelAdapter extends TypeAdapter<ClientModel> {
       email: fields[5] as String,
       address: fields[6] as String,
       dateAdded: fields[7] as DateTime,
+      measurements: (fields[8] as Map?)?.cast<String, dynamic>(),
     );
   }
 
   @override
   void write(BinaryWriter writer, ClientModel obj) {
     writer
-      ..writeByte(8)
+      ..writeByte(9)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -47,7 +48,9 @@ class ClientModelAdapter extends TypeAdapter<ClientModel> {
       ..writeByte(6)
       ..write(obj.address)
       ..writeByte(7)
-      ..write(obj.dateAdded);
+      ..write(obj.dateAdded)
+      ..writeByte(8)
+      ..write(obj.measurements);
   }
 
   @override
@@ -75,6 +78,7 @@ _$ClientModelImpl _$$ClientModelImplFromJson(Map<String, dynamic> json) =>
       email: json['email'] as String,
       address: json['address'] as String,
       dateAdded: DateTime.parse(json['dateAdded'] as String),
+      measurements: json['measurements'] as Map<String, dynamic>?,
     );
 
 Map<String, dynamic> _$$ClientModelImplToJson(_$ClientModelImpl instance) =>
@@ -87,6 +91,7 @@ Map<String, dynamic> _$$ClientModelImplToJson(_$ClientModelImpl instance) =>
       'email': instance.email,
       'address': instance.address,
       'dateAdded': instance.dateAdded.toIso8601String(),
+      'measurements': instance.measurements,
     };
 
 const _$GenderEnumMap = {

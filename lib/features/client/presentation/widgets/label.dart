@@ -9,12 +9,11 @@ class Label extends StatelessWidget {
 
   @override
   Widget build(BuildContext context){
+    final textTheme = Theme.of(context).textTheme;
+
     return Text(
       label,
-      style: const TextStyle(
-        fontSize: 18,
-        fontWeight: FontWeight.w100
-      )
+      style: textTheme.labelLarge
     );
   }
 
