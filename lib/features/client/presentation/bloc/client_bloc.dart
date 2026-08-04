@@ -2,6 +2,7 @@ import 'package:tailor_made/features/client/domain/entities/client.dart';
 import 'package:tailor_made/features/client/domain/usecases/save_client.dart';
 import 'package:tailor_made/features/client/domain/usecases/fetch_clients.dart';
 import 'package:tailor_made/features/client/domain/usecases/erase_client.dart';
+import 'package:tailor_made/features/client/domain/usecases/edit_client.dart';
 import 'package:tailor_made/features/client/domain/usecases/save_client_measurements.dart';
 import 'package:tailor_made/core/usecase/usecase.dart';
 import 'package:tailor_made/core/constants/enums.dart';
@@ -14,22 +15,26 @@ class ClientBloc extends Bloc<ClientEvent, ClientState> {
   final SaveClient _saveClient;
   final FetchClients _fetchClients;
   final EraseClient _eraseClient;
+  final EditClient _editClient;
   final SaveClientMeasurements _saveMeasurements;
   ClientBloc({
     required SaveClient saveClient,
     required FetchClients fetchClients,
     required EraseClient eraseClient,
     required SaveClientMeasurements saveMeasurements,
+    required EditClient editClient,
   })  : _fetchClients = fetchClients,
         _saveClient = saveClient,
         _eraseClient = eraseClient,
         _saveMeasurements = saveMeasurements,
+        _editClient = editClient,
         super(ClientInitial()) {
     on<ClientEvent>((event, emit) => emit(ClientLoading()));
     on<ClientSave>(_onClientSave);
     on<ClientFetchAllClients>(_onClientsFetch);
     on<ClientErase>(_onClientErase);
     on<ClientMeasurementsSave>(_onMeasurementsSave);
+    on<ClientEdit>(_onClientEdit);
     // on<ClientMeasurementsEdit>();
   }
 
@@ -99,5 +104,30 @@ class ClientBloc extends Bloc<ClientEvent, ClientState> {
       (l) => emit(ClientFailure(l.message)),
       (r) => emit(ClientMeasurementsSaveSuccess())
     );
+  }
+
+
+  void _onClientEdit(
+    ClientEdit event,
+    Emitter<ClientState> emit,
+  ) async {
+    final res = await _editClient(
+      ClientEditParams(
+        id: event.id,
+        firstName: event.firstName,
+        lastName: event.lastName,
+        address: event.address, 
+        gender: event.gender,
+        phoneNumber: event.phoneNumber,
+        email: event.email,
+      )
+    );
+    
+    res.fold(
+      (l) => emit(ClientFailure(l.message)),
+      (r) => emit (ClientEditSuccess())
+    );
+
+
   }
 }

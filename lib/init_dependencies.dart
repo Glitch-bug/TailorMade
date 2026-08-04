@@ -8,6 +8,7 @@ import 'package:tailor_made/features/client/domain/usecases/erase_client.dart';
 import 'package:tailor_made/features/client/domain/repositories/client_repository.dart';
 import 'package:tailor_made/features/client/data/repositories/client_repository_impl.dart';
 import 'package:tailor_made/features/client/domain/usecases/save_client.dart';
+import 'package:tailor_made/features/client/domain/usecases/edit_client.dart';
 import 'package:tailor_made/features/client/domain/usecases/save_client_measurements.dart';
 import 'package:tailor_made/features/client/domain/usecases/edit_client_measurements.dart';
 import 'package:tailor_made/features/client/domain/usecases/fetch_clients.dart';
@@ -86,6 +87,12 @@ void _initClient() {
       )
     )
 
+    ..registerFactory(
+      () => EditClient(
+        serviceLocator()
+      )
+    )
+
     //bloc 
     ..registerLazySingleton(
       () => ClientBloc(
@@ -93,6 +100,7 @@ void _initClient() {
         fetchClients: serviceLocator(),
         eraseClient: serviceLocator(),
         saveMeasurements: serviceLocator(),
+        editClient: serviceLocator()
         // editClientMeasurements: serviceLocator(),
       )
     );

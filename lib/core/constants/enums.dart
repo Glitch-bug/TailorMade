@@ -33,7 +33,7 @@ enum Gender with DropdownEntry{
     };
 
   static fromValue(String value) {
-    switch (value) {
+    switch (value.toLowerCase()) {
       case "female":
         return Gender.female;
       case "male":

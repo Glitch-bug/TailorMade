@@ -6,8 +6,18 @@ import 'package:fpdart/fpdart.dart';
 abstract interface class ClientRepository {
   Future<Either<Failure, List<Client>>> getClients();
 
-  Future<Either<Failure,void>> addClient({ 
-    required String firstName, 
+  Future<Either<Failure, void>> addClient({
+    required String firstName,
+    required String lastName,
+    required String phoneNumber,
+    required Gender gender,
+    required String email,
+    required String address,
+  });
+
+  Future<Either<Failure, void>> editClient({
+    required String id,
+    required String firstName,
     required String lastName,
     required String phoneNumber,
     required Gender gender,
@@ -17,6 +27,12 @@ abstract interface class ClientRepository {
 
   Future<Either<Failure, void>> eraseClient({required String id});
 
-  Future<Either<Failure, void>> saveClientMeasurements({required String id, required Map<String, dynamic> measurements});
-  Future<Either<Failure, void>> editClientMeasurements({required String id, required Map<String, dynamic>? measurements});
+  Future<Either<Failure, void>> saveClientMeasurements({
+    required String id,
+    required Map<String, dynamic> measurements,
+  });
+  Future<Either<Failure, void>> editClientMeasurements({
+    required String id,
+    required Map<String, dynamic>? measurements,
+  });
 }

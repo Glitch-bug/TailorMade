@@ -13,15 +13,19 @@ final class ClientFailure extends ClientState {
 }
 
 final class ClientSuccess extends ClientState {}
-final class ClientSaveSuccess extends ClientSuccess {}
+final class ClientSaveSuccess extends ClientChangeSuccess {}
 
 final class ClientDisplaySuccess extends ClientSuccess {
   final List<Client> clients;
   ClientDisplaySuccess(this.clients);
 }
 
-final class ClientDeleteSucces extends ClientSuccess {}
+final class ClientDeleteSucces extends ClientChangeSuccess {}
 
-final class ClientMeasurementsSaveSuccess extends ClientSaveSuccess {}
+final class ClientMeasurementsSaveSuccess extends ClientChangeSuccess {}
 
-final class ClientMeasurementsEditSuccess extends ClientSuccess {}
+final class ClientMeasurementsEditSuccess extends ClientChangeSuccess {}
+
+final class ClientEditSuccess extends ClientChangeSuccess {}
+
+final class ClientChangeSuccess extends ClientSuccess {}

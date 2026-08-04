@@ -5,10 +5,11 @@ import 'package:hive/hive.dart';
 
 abstract class ClientLocalDataSource {
   Future<void> addClient({required ClientModel client});
+  Future<void> editClient({required ClientModel client});
   List<ClientModel> getClients();
   Future<void> eraseClient({required String id});
   Future<void> saveClientMeasurements({required String id, required Map<String, dynamic> measurements});
-    Future<void> editClientMeasurements({required String id, required Map<String, dynamic>? measurements});
+  Future<void> editClientMeasurements({required String id, required Map<String, dynamic>? measurements});
 }
 
 
@@ -24,6 +25,22 @@ class ClientLocalDataSourceImpl implements ClientLocalDataSource {
       throw LocalStorageException(e.toString());
     }
   }
+
+  @override 
+  Future<void> editClient({required ClientModel client}) async {
+    try {
+      ClientModel? oldClient = box.get(client.id);
+      if (oldClient != null) {
+        box.put(client.id, client.copyWith(dateAdded: oldClient.dateAdded, measurements: oldClient.measurements));
+      } else {
+        throw Exception("The specified client does not exist");
+      }
+    } catch (e) {
+      throw LocalStorageException(e.toString());
+    }
+  }
+
+  
   
   @override
   List<ClientModel> getClients(){

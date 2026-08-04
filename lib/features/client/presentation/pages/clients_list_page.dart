@@ -39,6 +39,15 @@ class _ClientsListPageState extends State<ClientsListPage> {
     }).toList();
   }
 
+  void _updateSelected({required Client? select}) {
+    selected = rawClients.cast<Client?>().firstWhere(
+      (client){
+        return  select?.id == client?.id;
+      },
+      orElse: () => null,
+    );
+  }
+
   void deleteClient({required String id}) {
     context.read<ClientBloc>().add(ClientErase(id: id));
   }
@@ -94,12 +103,11 @@ class _ClientsListPageState extends State<ClientsListPage> {
         ),
         body: BlocConsumer<ClientBloc, ClientState>(
           listener: (context, state) {
-            if (state is ClientDeleteSucces) {
-              context.read<ClientBloc>().add(ClientFetchAllClients());
-            } else if (state is ClientSaveSuccess) {
+            if (state is ClientChangeSuccess) {
               context.read<ClientBloc>().add(ClientFetchAllClients());
             } else if (state is ClientDisplaySuccess) {
               rawClients = state.clients;
+              _updateSelected(select: selected);
               _filterClients(query: searchController.text);
               setState(() {});
             }
@@ -154,12 +162,13 @@ class _ClientsListPageState extends State<ClientsListPage> {
                                 },
                               ),
                             PanelState.editClient => ClientEditPanel(
-                              client: selected,
-                              onClose: (){
-                                panelState = null;
-                                setState((){});
-                              },
-                            )
+                                client: selected,
+                                onClose: () {
+                                  panelState = null;
+                                  // selected = null;
+                                  setState(() {});
+                                },
+                              )
                           }
                         : SizedBox(),
                   ),

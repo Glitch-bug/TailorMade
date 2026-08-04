@@ -21,6 +21,25 @@ final class ClientSave extends ClientEvent {
   });
 }
 
+final class ClientEdit extends ClientEvent {
+  final String id;
+  final String firstName;
+  final String lastName;
+  final String phoneNumber;
+  final String email;
+  final Gender gender;
+  final String address;
+
+  ClientEdit({
+    required this.id,
+    required this.firstName,
+    required this.lastName,
+    required this.gender,
+    required this.phoneNumber,
+    required this.email,
+    required this.address,
+  });
+}
 
 final class ClientFetchAllClients extends ClientEvent{}
 

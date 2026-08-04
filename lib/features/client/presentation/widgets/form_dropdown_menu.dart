@@ -35,8 +35,6 @@ class FormDropDownMenu<T extends DropdownEntry> extends StatelessWidget {
               dropdownMenuEntries:items.map((item) => DropdownMenuEntry(
                 label: item.title,
                 value: item.value
-    
-              
               )).toList().cast(),
             ),
           ),

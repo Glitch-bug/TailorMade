@@ -38,7 +38,7 @@ class FormInput extends StatelessWidget {
                 inputFormatters: (inputType == TextInputType.number)?[
                   FilteringTextInputFormatter.digitsOnly,
                 ]:[],
-                maxLength: 20,
+                // maxLength: 20,
                 decoration: InputDecoration(
                   
                   hintText: hintText,
