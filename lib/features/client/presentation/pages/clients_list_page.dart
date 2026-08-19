@@ -8,6 +8,7 @@ import 'package:tailor_made/features/client/presentation/bloc/client_bloc.dart';
 import 'package:tailor_made/features/client/presentation/pages/add_client_page.dart';
 import 'package:tailor_made/features/client/presentation/widgets/client_list.dart';
 import 'package:tailor_made/features/client/presentation/widgets/client_edit_panel.dart';
+import 'package:tailor_made/features/client/presentation/widgets/client_measurements.dart';
 
 class ClientsListPage extends StatefulWidget {
   const ClientsListPage({super.key});
@@ -37,6 +38,8 @@ class _ClientsListPageState extends State<ClientsListPage> {
           client.phoneNumber.toLowerCase().contains(query);
       return match;
     }).toList();
+
+    clients.sort((a, b) => "${a.firstName} ${a.lastName}".compareTo("${a.firstName} ${a.lastName}"));
   }
 
   void _updateSelected({required Client? select}) {
@@ -205,47 +208,3 @@ class _ClientsListPageState extends State<ClientsListPage> {
   }
 }
 
-class ClientMeasurements extends StatelessWidget {
-  final VoidCallback close;
-  final Client? client;
-  const ClientMeasurements(
-      {required this.close, required this.client, super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    Map<String, dynamic>? measurements = client?.measurements;
-    List<String> keys = measurements?.keys.toList() ?? [];
-    return Container(
-      height: size.height,
-      width: size.width,
-      // decoration: const BoxDecoration(
-      //   color: Colors.white,
-      // ),
-      child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            IconButton(icon: const Icon(Icons.close), onPressed: close),
-            SizedBox(
-              height: size.height * 0.85,
-              width: size.width,
-              child: ListView.separated(
-                  itemBuilder: (context, index) {
-                    return ListTile(
-                      title: Text(keys[index]),
-                      subtitle: Text(measurements?[keys[index]]),
-                    );
-                  },
-                  separatorBuilder: (context, index) {
-                    return Divider(
-                      indent: size.width * 0.04,
-                      endIndent: size.width * 0.04,
-                    );
-                  },
-                  itemCount: keys.length),
-            )
-          ]),
-    );
-  }
-}

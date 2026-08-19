@@ -54,7 +54,7 @@ class ClientEditPanelState extends State<ClientEditPanel> {
           lastName: lastName.text,
           address: address.text,
           email: email.text,
-          gender: Gender.fromTitle(gender.text),
+          gender: Gender.fromValue(gender.value.text),
           phoneNumber: phoneNumber.text,
         ));
   }

@@ -4,6 +4,7 @@ import 'package:tailor_made/features/client/domain/usecases/fetch_clients.dart';
 import 'package:tailor_made/features/client/domain/usecases/erase_client.dart';
 import 'package:tailor_made/features/client/domain/usecases/edit_client.dart';
 import 'package:tailor_made/features/client/domain/usecases/save_client_measurements.dart';
+import 'package:tailor_made/features/client/domain/usecases/edit_client_measurements.dart';
 import 'package:tailor_made/core/usecase/usecase.dart';
 import 'package:tailor_made/core/constants/enums.dart';
 import 'package:flutter/material.dart';
@@ -17,25 +18,28 @@ class ClientBloc extends Bloc<ClientEvent, ClientState> {
   final EraseClient _eraseClient;
   final EditClient _editClient;
   final SaveClientMeasurements _saveMeasurements;
+  final EditClientMeasurements _editClientMeasurements;
   ClientBloc({
     required SaveClient saveClient,
     required FetchClients fetchClients,
     required EraseClient eraseClient,
     required SaveClientMeasurements saveMeasurements,
     required EditClient editClient,
+    required EditClientMeasurements editClientMeasurements,
   })  : _fetchClients = fetchClients,
         _saveClient = saveClient,
         _eraseClient = eraseClient,
         _saveMeasurements = saveMeasurements,
         _editClient = editClient,
+        _editClientMeasurements = editClientMeasurements,
         super(ClientInitial()) {
     on<ClientEvent>((event, emit) => emit(ClientLoading()));
     on<ClientSave>(_onClientSave);
     on<ClientFetchAllClients>(_onClientsFetch);
     on<ClientErase>(_onClientErase);
-    on<ClientMeasurementsSave>(_onMeasurementsSave);
+    on<ClientMeasurementsSave>(_onClientMeasurementsSave);
     on<ClientEdit>(_onClientEdit);
-    // on<ClientMeasurementsEdit>();
+    on<ClientMeasurementsEdit>(_onClientMeasurementsEdit);
   }
 
   void _onClientSave(
@@ -89,7 +93,7 @@ class ClientBloc extends Bloc<ClientEvent, ClientState> {
 
   }
 
-  void _onMeasurementsSave(
+  void _onClientMeasurementsSave(
     ClientMeasurementsSave event,
     Emitter<ClientState> emit,
   ) async {
@@ -128,6 +132,25 @@ class ClientBloc extends Bloc<ClientEvent, ClientState> {
       (r) => emit (ClientEditSuccess())
     );
 
+
+  }
+
+  void _onClientMeasurementsEdit (
+    ClientMeasurementsEdit event,
+    Emitter<ClientState> emit,
+  )  async {
+
+    final res = await _editClientMeasurements(
+      EditMeasurementParams(
+        id: event.id,
+        measurements: event.measurements
+      )
+    );
+
+    res.fold(
+      (l) => emit(ClientFailure(l.message)),
+      (r) => emit(ClientMeasurementsEditSuccess())
+    );
 
   }
 }

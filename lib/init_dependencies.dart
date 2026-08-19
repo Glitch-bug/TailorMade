@@ -100,8 +100,8 @@ void _initClient() {
         fetchClients: serviceLocator(),
         eraseClient: serviceLocator(),
         saveMeasurements: serviceLocator(),
-        editClient: serviceLocator()
-        // editClientMeasurements: serviceLocator(),
+        editClient: serviceLocator(),
+        editClientMeasurements: serviceLocator(),
       )
     );
 }
