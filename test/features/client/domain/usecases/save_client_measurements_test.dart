@@ -20,7 +20,7 @@ void main() {
   }
 
   void arrangeReturnsFailure(){
-    when(() => mockClientRepository.saveClientMeasurements(id: any(named:'id'), measurements: any(named: 'measurements') )).thenAnswer((_) async => const Left(Failure()));
+    when(() => mockClientRepository.saveClientMeasurements(id: any(named:'id'), measurements: any(named: 'measurements') )).thenAnswer((_) async => const Left(LocalStorageFailure()));
   }
 
   group('Should return', (){
@@ -37,7 +37,7 @@ void main() {
       arrangeReturnsFailure();
 
       final result = await usecase(MeasurementParams(id: '1', measurements: {'fox':'rabbits'}));
-      expect(result, const Left(Failure()));
+      expect(result, const Left(LocalStorageFailure()));
       verify(() => mockClientRepository.saveClientMeasurements(id:any(named:'id'), measurements: any(named: 'measurements'),),).called(1);
       verifyNoMoreInteractions(mockClientRepository);
     });

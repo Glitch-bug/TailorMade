@@ -19,7 +19,7 @@ void main() {
   setUpAll((){
     registerFallbackValues();
   });
-  const failure = Failure();
+  const failure = LocalStorageFailure();
 
   const clientEditParams =  ClientEditParams(
     id: '1',
@@ -83,7 +83,7 @@ void main() {
 
       final result = await usecase(clientEditParams);
 
-      expect(result, const Left(Failure()));
+      expect(result, const Left(LocalStorageFailure()));
 
       verify(
         () => mockClientRepository.editClient(

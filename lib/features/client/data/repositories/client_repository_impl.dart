@@ -35,7 +35,7 @@ class ClientRepositoryImpl implements ClientRepository {
       ));
       return right(null);
     } on LocalStorageException catch (e) {
-      return left(Failure(e.message));
+      return left(LocalStorageFailure(e.message));
     }
   }
 
@@ -63,7 +63,7 @@ class ClientRepositoryImpl implements ClientRepository {
       );
       return right(null);
     } on LocalStorageException catch (e) {
-      return left(Failure(e.message));
+      return left(LocalStorageFailure(e.message));
     }
   }
 
@@ -76,7 +76,7 @@ class ClientRepositoryImpl implements ClientRepository {
           .toList();
       return right(clients);
     } on LocalStorageException catch (e) {
-      return left(Failure(e.message));
+      return left(LocalStorageFailure(e.message));
     }
   }
 
@@ -86,7 +86,7 @@ class ClientRepositoryImpl implements ClientRepository {
       await clientLocalDataSource.eraseClient(id: id);
       return right(null);
     } on LocalStorageException catch (e) {
-      return left(Failure(e.message));
+      return left(LocalStorageFailure(e.message));
     }
   }
 
@@ -98,7 +98,7 @@ class ClientRepositoryImpl implements ClientRepository {
           id: id, measurements: measurements);
       return right(null);
     } on LocalStorageException catch (e) {
-      return left(Failure(e.message));
+      return left(LocalStorageFailure(e.message));
     }
   }
 
@@ -110,7 +110,7 @@ class ClientRepositoryImpl implements ClientRepository {
           id: id, measurements: measurements);
       return right(null);
     } on LocalStorageException catch (e) {
-      return left(Failure(e.message));
+      return left(LocalStorageFailure(e.message));
     }
   }
 }

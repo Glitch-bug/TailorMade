@@ -42,7 +42,7 @@ void main() {
         gender: any(named: 'gender'),
         address: any(named: 'address'),
       ),
-    ).thenAnswer((_) async => const Left(Failure()));
+    ).thenAnswer((_) async => const Left(LocalStorageFailure()));
   }
 
   const clientParams = ClientParams(
@@ -76,7 +76,7 @@ void main() {
 
       final result = await usecase(clientParams);
 
-      expect(result, const Left(Failure()));
+      expect(result, const Left(LocalStorageFailure()));
 
       verify(() => mockClientRepository.addClient(
         firstName: any(named: 'firstName'),

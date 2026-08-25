@@ -32,7 +32,7 @@ void main() {
   }
 
   void arrangeReturnFailure(){
-    when(() => mockClientRepository.getClients()).thenAnswer((_) async => Left(Failure()));
+    when(() => mockClientRepository.getClients()).thenAnswer((_) async => const Left(LocalStorageFailure()));
   }
   test('Should get clients from the repository', ()async{
     // arrange
@@ -50,7 +50,7 @@ void main() {
     arrangeReturnFailure();
 
     final result = await usecase(NoParams());
-    expect(result, Left(Failure()));
+    expect(result, const Left(LocalStorageFailure()));
     verify(() => mockClientRepository.getClients()).called(1);
     verifyNoMoreInteractions(mockClientRepository);
   });

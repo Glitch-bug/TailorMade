@@ -19,7 +19,7 @@ void main(){
   }
 
   void arrangeReturnFailure(){
-    when(() => mockClientRepository.editClientMeasurements(id: any(named: 'id'), measurements: any(named: 'measurements'))).thenAnswer((_) async => const Left(Failure()));
+    when(() => mockClientRepository.editClientMeasurements(id: any(named: 'id'), measurements: any(named: 'measurements'))).thenAnswer((_) async => const Left(LocalStorageFailure()));
   }
 
   final editClientMeasurementParams = EditMeasurementParams(
@@ -44,7 +44,7 @@ void main(){
       arrangeReturnFailure();
 
       final result = await usecase(editClientMeasurementParams);
-      expect(result, const Left(Failure()));
+      expect(result, const Left(LocalStorageFailure()));
 
       verify(() => mockClientRepository.editClientMeasurements(id: any(named: 'id'), measurements: any(named: 'measurements'))).called(1);
       verifyNoMoreInteractions(mockClientRepository);

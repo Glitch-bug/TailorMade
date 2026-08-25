@@ -22,7 +22,7 @@ void main() {
   }
 
   void arrangeReturnFailure() {
-    when(() => mockClientRepository.eraseClient(id: any(named:'id'))).thenAnswer((_) async => Left(Failure()));
+    when(() => mockClientRepository.eraseClient(id: any(named:'id'))).thenAnswer((_) async => Left(LocalStorageFailure()));
   }
   test('Should trigger clientRepository.eraseClient', () async {
     arrangeReturnNull();
@@ -36,7 +36,7 @@ void main() {
 
   test('Should return a Failure when repository call fails', () async {
     arrangeReturnFailure();
-    const failure = Failure();
+    const failure = LocalStorageFailure();
     
 
     final result = await usecase(id);

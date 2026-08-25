@@ -9,7 +9,7 @@ part 'client_model.g.dart';
 
 @freezed
 @HiveType(typeId: 1)
-class ClientModel with _$ClientModel {
+class ClientModel with _$ClientModel  {
   const ClientModel._();
   
   const factory ClientModel({
