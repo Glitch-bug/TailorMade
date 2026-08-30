@@ -7,6 +7,7 @@ import 'package:fpdart/fpdart.dart';
 import 'package:tailor_made/core/error/failures.dart';
 import 'package:tailor_made/core/constants/enums.dart';
 import 'package:uuid/uuid.dart';
+import 'package:tailor_made/core/extensions/datetime_extension.dart';
 
 class ClientRepositoryImpl implements ClientRepository {
   final ClientLocalDataSource clientLocalDataSource;
@@ -31,7 +32,7 @@ class ClientRepositoryImpl implements ClientRepository {
         address: address,
         phoneNumber: phoneNumber,
         gender: gender,
-        dateAdded: DateTime.now(),
+        dateAdded: DateTime.now().format(),
       ));
       return right(null);
     } on LocalStorageException catch (e) {
@@ -58,7 +59,7 @@ class ClientRepositoryImpl implements ClientRepository {
           address: address,
           phoneNumber: phoneNumber,
           gender: gender,
-          dateAdded: DateTime.now(),
+          dateAdded: DateTime.now().format(),
         ),
       );
       return right(null);
@@ -70,10 +71,10 @@ class ClientRepositoryImpl implements ClientRepository {
   @override
   Future<Either<Failure, List<Client>>> getClients() async {
     try {
-      List<Client> clients = clientLocalDataSource
-          .getClients()
-          .map((client) => client.toEntity())
-          .toList();
+      List<Client> clients = await clientLocalDataSource
+          .getClients().then((clients)=> clients.map((client) => client.toEntity())
+          .toList());
+  
       return right(clients);
     } on LocalStorageException catch (e) {
       return left(LocalStorageFailure(e.message));

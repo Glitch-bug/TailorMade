@@ -46,6 +46,7 @@ dependencies:
   flutter_bloc: ^9.1.1
   logger: ^2.7.0
   equatable: ^2.1.0
+  intl: ^0.20.3
 
 dev_dependencies:
   flutter_test:

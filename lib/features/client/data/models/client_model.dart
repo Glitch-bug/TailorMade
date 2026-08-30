@@ -2,14 +2,14 @@ import 'package:hive/hive.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:tailor_made/core/constants/enums.dart';
 import 'package:tailor_made/features/client/domain/entities/client.dart';
-
+import 'package:equatable/equatable.dart';
 part 'client_model.freezed.dart';
 part 'client_model.g.dart';
 
 
 @freezed
 @HiveType(typeId: 1)
-class ClientModel with _$ClientModel  {
+class ClientModel extends Equatable  with _$ClientModel {
   const ClientModel._();
   
   const factory ClientModel({
@@ -52,4 +52,7 @@ class ClientModel with _$ClientModel  {
         dateAdded: dateAdded,
         measurements: measurements,
       );
+
+  @override
+  List<Object?> get props =>  [id, firstName, lastName, phoneNumber, gender, address, email, measurements];
 }

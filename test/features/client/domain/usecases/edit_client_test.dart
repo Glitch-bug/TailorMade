@@ -78,7 +78,7 @@ void main() {
       ).called(1);
       verifyNoMoreInteractions(mockClientRepository);
     });
-    test('Failure when the call fails', () async {
+    test('LocalStorageFailure when the call fails', () async {
       arrangeReturnFailure();
 
       final result = await usecase(clientEditParams);

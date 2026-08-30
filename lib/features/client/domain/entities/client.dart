@@ -12,7 +12,7 @@ class Client extends Equatable {
   final DateTime dateAdded;
   final Map<String, dynamic>? measurements;
 
-  Client({
+  const Client({
     required this.id,
     required this.firstName,
     required this.lastName,
@@ -25,6 +25,5 @@ class Client extends Equatable {
   });
 
   @override
-  // TODO: implement props
-  List<Object?> get props => [id, firstName, lastName, phoneNumber, gender, email, address, dateAdded, measurements];
+  List<Object?> get props => [id, firstName, lastName, phoneNumber, gender, email, address, measurements];
 }

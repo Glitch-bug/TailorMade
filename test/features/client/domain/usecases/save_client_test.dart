@@ -15,7 +15,7 @@ void main() {
     usecase = SaveClient(mockClientRepository);
   });
 
-  setUpAll((){
+  setUpAll(() {
     registerFallbackValues();
   });
 
@@ -46,12 +46,13 @@ void main() {
   }
 
   const clientParams = ClientParams(
-      firstName: 'Ben',
-      lastName: 'Dover',
-      phoneNumber: '02411116666',
-      email: 'BenDover@gmail.com',
-      address: 'Memory Lane',
-      gender: Gender.male);
+    firstName: 'Ben',
+    lastName: 'Dover',
+    phoneNumber: '02411116666',
+    email: 'BenDover@gmail.com',
+    address: 'Memory Lane',
+    gender: Gender.male,
+  );
 
   group('Should return', () {
     test('null when successful', () async {
@@ -60,32 +61,36 @@ void main() {
       final result = await usecase(clientParams);
 
       expect(result, const Right(null));
-      verify(() => mockClientRepository.addClient(
-        firstName: any(named: 'firstName'),
-        lastName: any(named: 'lastName'),
-        phoneNumber: any(named: 'phoneNumber'),
-        email: any(named: 'email'),
-        gender: any(named: 'gender'),
-        address: any(named: 'address'),
-      )).called(1);
+      verify(
+        () => mockClientRepository.addClient(
+          firstName: 'Ben',
+          lastName: 'Dover',
+          phoneNumber: '02411116666',
+          email: 'BenDover@gmail.com',
+          address: 'Memory Lane',
+          gender: Gender.male,
+        ),
+      ).called(1);
       verifyNoMoreInteractions(mockClientRepository);
     });
 
-    test('Failure upon failure', ()async {
+    test('LocalStorageFailure upon failure', () async {
       arrangeReturnFailure();
 
       final result = await usecase(clientParams);
 
       expect(result, const Left(LocalStorageFailure()));
 
-      verify(() => mockClientRepository.addClient(
-        firstName: any(named: 'firstName'),
-        lastName: any(named: 'lastName'),
-        phoneNumber: any(named: 'phoneNumber'),
-        email: any(named: 'email'),
-        gender: any(named: 'gender'),
-        address: any(named: 'address'),
-      )).called(1);
+      verify(
+        () => mockClientRepository.addClient(
+          firstName: 'Ben',
+          lastName: 'Dover',
+          phoneNumber: '02411116666',
+          email: 'BenDover@gmail.com',
+          address: 'Memory Lane',
+          gender: Gender.male,
+        ),
+      ).called(1);
       verifyNoMoreInteractions(mockClientRepository);
     });
   });

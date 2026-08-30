@@ -36,17 +36,17 @@ void main(){
 
       expect(result, const Right(null));
 
-      verify(() => mockClientRepository.editClientMeasurements(id: any(named:'id'), measurements: any(named: 'measurements'))).called(1);
+      verify(() => mockClientRepository.editClientMeasurements(id: '1', measurements: {'red': 'herring'})).called(1);
       verifyNoMoreInteractions(mockClientRepository);
     });
 
-    test(' Failure upon failure',()async{
+    test('LocalStorageFailure upon failure',()async{
       arrangeReturnFailure();
 
       final result = await usecase(editClientMeasurementParams);
       expect(result, const Left(LocalStorageFailure()));
 
-      verify(() => mockClientRepository.editClientMeasurements(id: any(named: 'id'), measurements: any(named: 'measurements'))).called(1);
+      verify(() => mockClientRepository.editClientMeasurements(id: '1', measurements: {'red': 'herring'})).called(1);
       verifyNoMoreInteractions(mockClientRepository);
     });
   });

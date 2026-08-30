@@ -6,7 +6,7 @@ import 'package:hive/hive.dart';
 abstract class ClientLocalDataSource {
   Future<void> addClient({required ClientModel client});
   Future<void> editClient({required ClientModel client});
-  List<ClientModel> getClients();
+  Future<List<ClientModel>> getClients();
   Future<void> eraseClient({required String id});
   Future<void> saveClientMeasurements({required String id, required Map<String, dynamic> measurements});
   Future<void> editClientMeasurements({required String id, required Map<String, dynamic>? measurements});
@@ -43,9 +43,9 @@ class ClientLocalDataSourceImpl implements ClientLocalDataSource {
   
   
   @override
-  List<ClientModel> getClients(){
+  Future<List<ClientModel>> getClients() async {
     try {
-      List<ClientModel> clients = box.values.toList();
+      List<ClientModel> clients = await box.values.toList();
       return clients;
     } catch (e) {
       throw LocalStorageException(e.toString());

@@ -30,15 +30,15 @@ void main() {
 
       final result = await usecase(MeasurementParams(id: '1', measurements: {'fox':'rabbits'}));
       expect(result, const Right(null));
-      verify(() => mockClientRepository.saveClientMeasurements(id:any(named:'id'), measurements: any(named: 'measurements'),),).called(1);
+      verify(() => mockClientRepository.saveClientMeasurements(id: '1', measurements: {'fox':'rabbits'},),).called(1);
       verifyNoMoreInteractions(mockClientRepository);
     });
-    test('Failure upon failure', ()async {
+    test('LocalStorageFailure upon failure', ()async {
       arrangeReturnsFailure();
 
       final result = await usecase(MeasurementParams(id: '1', measurements: {'fox':'rabbits'}));
       expect(result, const Left(LocalStorageFailure()));
-      verify(() => mockClientRepository.saveClientMeasurements(id:any(named:'id'), measurements: any(named: 'measurements'),),).called(1);
+      verify(() => mockClientRepository.saveClientMeasurements(id: '1', measurements: {'fox':'rabbits'},),).called(1);
       verifyNoMoreInteractions(mockClientRepository);
     });
 
