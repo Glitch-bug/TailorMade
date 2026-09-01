@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:fpdart/fpdart.dart';
@@ -11,7 +13,7 @@ import 'package:tailor_made/features/client/data/datasources/client_local_dataso
 import 'package:tailor_made/features/client/domain/entities/client.dart';
 import 'package:uuid/uuid.dart';
 
-import '../../../../fixtures/fixtures.dart' ;
+import '../../../../fixtures/fixtures.dart';
 import '../../../../helpers/mock_repositories.dart';
 
 class MockClientLocalDataSource extends Mock implements ClientLocalDataSource {}
@@ -23,7 +25,7 @@ void main() {
   late MockClientLocalDataSource mockClientLocalDataSource;
   late MockUuid mockUuid;
 
-  const String errorMessage = "An unexpected local storage error occured";
+
 
   final clientModels = [
     ClientModel(
@@ -55,7 +57,7 @@ void main() {
         dateAdded: DateTime.now().format()),
   ];
 
-  setUpAll((){
+  setUpAll(() {
     registerFallbackValues();
     mockUuid = MockUuid();
   });
@@ -65,10 +67,7 @@ void main() {
     repositoryImpl = ClientRepositoryImpl(mockClientLocalDataSource, mockUuid);
   });
 
-  
-
   group('addClient', () {
-    
     void arrangeReturnNull() async {
       when(() => mockUuid.v4()).thenReturn('1');
 
@@ -78,14 +77,15 @@ void main() {
     }
 
     void arrangeThrowException() async {
-      when(() => mockUuid.v4()).thenReturn('0cbeec6b-72a8-4932-93d4-80fa3720ab82');
+      when(() => mockUuid.v4())
+          .thenReturn('0cbeec6b-72a8-4932-93d4-80fa3720ab82');
 
       when(() =>
               mockClientLocalDataSource.addClient(client: any(named: 'client')))
           .thenThrow(const LocalStorageException(errorMessage));
     }
 
-    test('returns null on success', ()async {
+    test('returns null on success', () async {
       arrangeReturnNull();
       final result = await repositoryImpl.addClient(
         firstName: client.firstName,
@@ -97,11 +97,12 @@ void main() {
       );
 
       expect(result, const Right(null));
-      verify(() => mockClientLocalDataSource.addClient(client: ClientModel.fromEntity(client))).called(1);
+      verify(() => mockClientLocalDataSource.addClient(
+          client: ClientModel.fromEntity(client))).called(1);
       verifyNoMoreInteractions(mockClientLocalDataSource);
     });
 
-    test('returns LocalStorageFailure on failure', () async{
+    test('returns LocalStorageFailure on failure', () async {
       arrangeThrowException();
       final result = await repositoryImpl.addClient(
         firstName: client.firstName,
@@ -121,14 +122,17 @@ void main() {
   group('editClient', () {
     void arrangeReturnNull() async {
       when(() => mockClientLocalDataSource.editClient(
-              client: any(named: 'client')))
-          .thenAnswer((_) async {});
+          client: any(named: 'client'))).thenAnswer((_) async {});
     }
 
     void arrangeThrowException() async {
-      when(() => mockClientLocalDataSource.editClient(
-              client: any(named: 'client')))
-          .thenThrow(const LocalStorageException(errorMessage));
+      when(
+        () => mockClientLocalDataSource.editClient(
+          client: any(
+            named: 'client',
+          ),
+        ),
+      ).thenThrow(const LocalStorageException(errorMessage));
     }
 
     test('returns null on success', () async {
@@ -144,11 +148,12 @@ void main() {
       );
 
       expect(result, const Right(null));
-      verify(() => mockClientLocalDataSource.editClient(client: ClientModel.fromEntity(client))).called(1);
+      verify(() => mockClientLocalDataSource.editClient(
+          client: ClientModel.fromEntity(client))).called(1);
       verifyNoMoreInteractions(mockClientLocalDataSource);
     });
 
-    test('returns LocalStorageFailure on failure', ()async {
+    test('returns LocalStorageFailure on failure', () async {
       arrangeThrowException();
       final result = await repositoryImpl.editClient(
         id: client.id,
@@ -173,10 +178,11 @@ void main() {
     }
 
     void arrangeThrowException() {
-      when(() => mockClientLocalDataSource.getClients()).thenThrow(const LocalStorageException(errorMessage));
+      when(() => mockClientLocalDataSource.getClients())
+          .thenThrow(const LocalStorageException(errorMessage));
     }
 
-    test('should return a list of 3 clients  on success', () async{
+    test('should return a list of 3 clients  on success', () async {
       arrangeReturn3Clients();
       final result = await repositoryImpl.getClients();
 
@@ -187,7 +193,7 @@ void main() {
       verifyNoMoreInteractions(mockClientLocalDataSource);
     });
 
-    test('returns LocalStorageFailure on failure', ()async {
+    test('returns LocalStorageFailure on failure', () async {
       arrangeThrowException();
       final result = await repositoryImpl.getClients();
 
@@ -198,19 +204,17 @@ void main() {
   });
 
   group('eraseClient', () {
-    void arrangeReturnNull(){
-      when(() => mockClientLocalDataSource.eraseClient(id: any(named:"id"))).thenAnswer(
-        (_) async => {}
-      ); 
+    void arrangeReturnNull() {
+      when(() => mockClientLocalDataSource.eraseClient(id: any(named: "id")))
+          .thenAnswer((_) async => {});
     }
 
-    void arrangeThrowException () {
-      when(() => mockClientLocalDataSource.eraseClient(id:any(named:"id"))).thenThrow(
-        const LocalStorageException(errorMessage)
-      );
+    void arrangeThrowException() {
+      when(() => mockClientLocalDataSource.eraseClient(id: any(named: "id")))
+          .thenThrow(const LocalStorageException(errorMessage));
     }
 
-    test(' should return null on success', ()async{
+    test(' should return null on success', () async {
       arrangeReturnNull();
 
       final result = await repositoryImpl.eraseClient(id: "1");
@@ -220,85 +224,93 @@ void main() {
       verifyNoMoreInteractions(mockClientLocalDataSource);
     });
 
-
-    test(" should return LocalStorageFailure on exception", ()async{
+    test(" should return LocalStorageFailure on exception", () async {
       arrangeThrowException();
 
-      final result = await repositoryImpl.eraseClient(id:"1");
+      final result = await repositoryImpl.eraseClient(id: "1");
 
       expect(result, equals(const Left(LocalStorageFailure(errorMessage))));
 
-      verify(()  => mockClientLocalDataSource.eraseClient(id:"1")).called(1);
+      verify(() => mockClientLocalDataSource.eraseClient(id: "1")).called(1);
       verifyNoMoreInteractions(mockClientLocalDataSource);
     });
   });
 
-
-  group('editClientMeasurements', (){
-    void arrangeReturnNull(){
-      when(() => mockClientLocalDataSource.editClientMeasurements(id: any(named:"id"), measurements: any(named:"measurements"))).thenAnswer(
-        (_) async => {});
+  group('editClientMeasurements', () {
+    void arrangeReturnNull() {
+      when(() => mockClientLocalDataSource.editClientMeasurements(
+              id: any(named: "id"), measurements: any(named: "measurements")))
+          .thenAnswer((_) async => {});
     }
 
     void arrangeThrowException() {
-      when(() => mockClientLocalDataSource.editClientMeasurements(id: any(named:"id"), measurements: any(named:"measurements"))).thenThrow(const LocalStorageException(errorMessage));
+      when(() => mockClientLocalDataSource.editClientMeasurements(
+              id: any(named: "id"), measurements: any(named: "measurements")))
+          .thenThrow(const LocalStorageException(errorMessage));
     }
 
-
-    test(' should return null on success', ()async{
+    test(' should return null on success', () async {
       arrangeReturnNull();
 
-      final result = await repositoryImpl.editClientMeasurements(id: "1", measurements: {"red": "herring"});
+      final result = await repositoryImpl
+          .editClientMeasurements(id: "1", measurements: json.decode(fixture("measurements.json")));
 
       expect(result, const Right(null));
 
-      verify(() => mockClientLocalDataSource.editClientMeasurements(id: "1", measurements: {"red": "herring"}));
+      verify(() => mockClientLocalDataSource
+          .editClientMeasurements(id: "1", measurements: json.decode(fixture("measurements.json"))));
       verifyNoMoreInteractions(mockClientLocalDataSource);
     });
 
-
-    test(' should return LocalStorageFailure on exception', ()async{
+    test(' should return LocalStorageFailure on exception', () async {
       arrangeThrowException();
 
-      final result = await repositoryImpl.editClientMeasurements(id: "1", measurements: {"red": "herring"});
+      final result = await repositoryImpl
+          .editClientMeasurements(id: "1", measurements: json.decode(fixture("measurements.json")));
 
       expect(result, const Left(LocalStorageFailure(errorMessage)));
 
-      verify(() => mockClientLocalDataSource.editClientMeasurements(id: "1", measurements: {"red": "herring"}));
+      verify(() => mockClientLocalDataSource
+          .editClientMeasurements(id: "1", measurements:json.decode(fixture("measurements.json"))));
       verifyNoMoreInteractions(mockClientLocalDataSource);
     });
   });
 
-
-  group('saveClientMeasurments', (){
-    void arrangeReturnNull(){
-      when(() => mockClientLocalDataSource.saveClientMeasurements(id: any(named: "id"), measurements: any(named:"measurements"))).thenAnswer((_) async => {});
+  group('saveClientMeasurments', () {
+    void arrangeReturnNull() {
+      when(() => mockClientLocalDataSource.saveClientMeasurements(
+              id: any(named: "id"), measurements: any(named: "measurements")))
+          .thenAnswer((_) async => {});
     }
 
-    void arrangeThrowException(){
-      when(() => mockClientLocalDataSource.saveClientMeasurements(id: any(named: "id"), measurements: any(named:"measurements"))).thenThrow(const LocalStorageException(errorMessage));
+    void arrangeThrowException() {
+      when(() => mockClientLocalDataSource.saveClientMeasurements(
+              id: any(named: "id"), measurements: any(named: "measurements")))
+          .thenThrow(const LocalStorageException(errorMessage));
     }
 
-
-    test(' should return null on success',()async{
+    test(' should return null on success', () async {
       arrangeReturnNull();
 
-      final result = await repositoryImpl.saveClientMeasurements(id: "1", measurements: {"red":"herring"});
+      final result = await repositoryImpl
+          .saveClientMeasurements(id: "1", measurements: json.decode(fixture("measurements.json")));
 
       expect(result, const Right(null));
-      verify(() => mockClientLocalDataSource.saveClientMeasurements(id: "1", measurements: {"red":"herring"})).called(1);
+      verify(() => mockClientLocalDataSource.saveClientMeasurements(
+          id: "1",
+          measurements: json.decode(fixture("measurements.json")))).called(1);
       verifyNoMoreInteractions(mockClientLocalDataSource);
     });
-    test(' should return LocalStorageFailure on exception', ()async{
+    test(' should return LocalStorageFailure on exception', () async {
       arrangeThrowException();
 
-
-      final result = await repositoryImpl.saveClientMeasurements(id: "1", measurements: {"red":"herring"});
+      final result = await repositoryImpl
+          .saveClientMeasurements(id: "1", measurements: json.decode(fixture("measurements.json")));
 
       expect(result, const Left(LocalStorageFailure(errorMessage)));
-      verify(() => mockClientLocalDataSource.saveClientMeasurements(id: "1", measurements: {"red":"herring"})).called(1);
+      verify(() => mockClientLocalDataSource.saveClientMeasurements(
+          id: "1", measurements: json.decode(fixture("measurements.json")))).called(1);
       verifyNoMoreInteractions(mockClientLocalDataSource);
     });
   });
-
 }
