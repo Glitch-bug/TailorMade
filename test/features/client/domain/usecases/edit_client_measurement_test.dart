@@ -1,8 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:tailor_made/features/client/domain/usecases/edit_client_measurements.dart';
 import 'package:tailor_made/core/error/failures.dart';
+import '../../../../fixtures/fixtures.dart';
 import '../../../../helpers/mock_repositories.dart';
 
 void main(){
@@ -24,7 +27,7 @@ void main(){
 
   final editClientMeasurementParams = EditMeasurementParams(
     id: '1',
-    measurements: {'red': 'herring'},
+    measurements: json.decode(fixture("measurements.json")),
   );
 
 
@@ -36,7 +39,7 @@ void main(){
 
       expect(result, const Right(null));
 
-      verify(() => mockClientRepository.editClientMeasurements(id: '1', measurements: {'red': 'herring'})).called(1);
+      verify(() => mockClientRepository.editClientMeasurements(id: '1', measurements: json.decode(fixture("measurements.json")))).called(1);
       verifyNoMoreInteractions(mockClientRepository);
     });
 
@@ -46,7 +49,7 @@ void main(){
       final result = await usecase(editClientMeasurementParams);
       expect(result, const Left(LocalStorageFailure()));
 
-      verify(() => mockClientRepository.editClientMeasurements(id: '1', measurements: {'red': 'herring'})).called(1);
+      verify(() => mockClientRepository.editClientMeasurements(id: '1', measurements: json.decode(fixture("measurements.json")))).called(1);
       verifyNoMoreInteractions(mockClientRepository);
     });
   });

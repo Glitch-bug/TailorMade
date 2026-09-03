@@ -33,7 +33,7 @@ void main() {
 
   group('ClientModel JSON', () {
     test('toJson -> fromJson round trip preserves measurements', () {
-      final model = ClientModel.fromEntity(client);
+      final model = ClientModel.fromEntity(clientMeasurements);
       final json = model.toJson();
       final result = ClientModel.fromJson(json);
 

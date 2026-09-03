@@ -45,7 +45,7 @@ class ClientLocalDataSourceImpl implements ClientLocalDataSource {
   @override
   Future<List<ClientModel>> getClients() async {
     try {
-      List<ClientModel> clients = await box.values.toList();
+      List<ClientModel> clients = box.values.toList();
       return clients;
     } catch (e) {
       throw LocalStorageException(e.toString());

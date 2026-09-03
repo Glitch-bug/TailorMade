@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tailor_made/core/utils/logger.dart';
 import 'package:tailor_made/features/client/presentation/bloc/client_bloc.dart';
 import 'package:tailor_made/features/client/domain/entities/client.dart';
 import 'package:tailor_made/features/client/presentation/widgets/form_input.dart';
@@ -28,6 +29,7 @@ class ClientMeasurementsState extends State<ClientMeasurements> {
   void initState() {
     super.initState();
     measurements = widget.client?.measurements;
+    logger.d(measurements);
     keys = measurements?.keys.toList() ?? [];
     controllers = keys.map((key) {
       return TextEditingController(text: measurements?[key]);
