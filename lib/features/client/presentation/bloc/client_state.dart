@@ -1,7 +1,11 @@
 part of 'client_bloc.dart';
 
+
 @immutable 
-sealed class ClientState {}
+sealed class ClientState extends Equatable {
+  @override
+  List<Object> get props => [];
+}
 
 final class ClientInitial extends ClientState {}
 
@@ -10,6 +14,10 @@ final class ClientLoading extends ClientState {}
 final class ClientFailure extends ClientState {
   final String error;
   ClientFailure(this.error);
+
+
+  @override 
+  List<Object> get props => [error];
 }
 
 final class ClientSuccess extends ClientState {}
@@ -18,6 +26,9 @@ final class ClientSaveSuccess extends ClientChangeSuccess {}
 final class ClientDisplaySuccess extends ClientSuccess {
   final List<Client> clients;
   ClientDisplaySuccess(this.clients);
+
+  @override 
+  List<Object> get props => [clients];
 }
 
 final class ClientDeleteSucces extends ClientChangeSuccess {}

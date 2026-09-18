@@ -78,7 +78,7 @@ final clientMeasurements = Client(
       gender: Gender.male,
       email: 'kofi@gmail.com',
       dateAdded: DateTime.now().format(),
-      measurements: json.decode(fixture("measurements.json")),
+      measurements: fixture("measurements.json"),
     );
 
 final clientModelMeasurements = ClientModel(
@@ -90,11 +90,11 @@ final clientModelMeasurements = ClientModel(
       gender: Gender.male,
       email: 'kofi@gmail.com',
       dateAdded: DateTime.now().format(),
-      measurements: json.decode(fixture("measurements.json")),
+      measurements: fixture("measurements.json"),
     );
 
 final clientModel = clientModels.last;
 
 const String errorMessage = "An unexpected local storage error occured";
 
-String fixture(String name) => File('test/fixtures/$name').readAsStringSync();
+Map<String, dynamic> fixture(String name) => json.decode(File('test/fixtures/$name').readAsStringSync());

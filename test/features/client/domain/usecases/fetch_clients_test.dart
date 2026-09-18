@@ -1,7 +1,5 @@
-import 'package:tailor_made/core/constants/enums.dart';
 import 'package:tailor_made/core/error/failures.dart';
 import 'package:tailor_made/core/usecase/usecase.dart';
-import 'package:tailor_made/features/client/domain/entities/client.dart';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';

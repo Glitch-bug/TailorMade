@@ -12,7 +12,7 @@ void main() async {
     MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (_) => serviceLocator<ClientBloc>()
+          create: (_) => sl<ClientBloc>()
         )
       ],
       child: const MyApp()

@@ -66,13 +66,13 @@ class _ClientsListPageState extends State<ClientsListPage> {
   }
 
   void getClients() {
-    context.read<ClientBloc>().add(ClientFetchAllClients());
+    context.read<ClientBloc>().add(ClientFetchAll());
   }
 
   @override
   void initState() {
     super.initState();
-    context.read<ClientBloc>().add(ClientFetchAllClients());
+    context.read<ClientBloc>().add(ClientFetchAll());
   }
 
   @override
@@ -107,7 +107,7 @@ class _ClientsListPageState extends State<ClientsListPage> {
         body: BlocConsumer<ClientBloc, ClientState>(
           listener: (context, state) {
             if (state is ClientChangeSuccess) {
-              context.read<ClientBloc>().add(ClientFetchAllClients());
+              context.read<ClientBloc>().add(ClientFetchAll());
             } else if (state is ClientDisplaySuccess) {
               rawClients = state.clients;
               _updateSelected(select: selected);
@@ -173,7 +173,7 @@ class _ClientsListPageState extends State<ClientsListPage> {
                                 },
                               )
                           }
-                        : SizedBox(),
+                        : const SizedBox(),
                   ),
                   Expanded(
                       flex: 4,
@@ -193,9 +193,9 @@ class _ClientsListPageState extends State<ClientsListPage> {
                           ),
                         AppState.measurements =>
                           ClientMeasurements(close: goToList, client: selected),
-                        AppState.editMeasurements => SizedBox(),
-                        AppState.saveClient => SizedBox(),
-                        AppState.saveMeasurements => SizedBox(),
+                        AppState.editMeasurements => const SizedBox(),
+                        AppState.saveClient => const SizedBox(),
+                        AppState.saveMeasurements => const SizedBox(),
                       })
                 ],
               );

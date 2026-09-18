@@ -38,6 +38,8 @@ enum Gender with DropdownEntry{
         return Gender.female;
       case "male":
         return Gender.male;
+      default:
+        return null;
     }
   }
 
@@ -45,9 +47,10 @@ enum Gender with DropdownEntry{
     switch (value) {
       case "Male":
         return Gender.male;
-
       case "Female":
         return Gender.female;
+      default: 
+        return null;
     }
   }
 }

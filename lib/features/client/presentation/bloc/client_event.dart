@@ -8,7 +8,7 @@ final class ClientSave extends ClientEvent {
   final String lastName;
   final String phoneNumber;
   final String email;
-  final Gender gender;
+  final String gender;
   final String address;
 
   ClientSave({
@@ -27,7 +27,7 @@ final class ClientEdit extends ClientEvent {
   final String lastName;
   final String phoneNumber;
   final String email;
-  final Gender gender;
+  final String gender;
   final String address;
 
   ClientEdit({
@@ -41,7 +41,7 @@ final class ClientEdit extends ClientEvent {
   });
 }
 
-final class ClientFetchAllClients extends ClientEvent{}
+final class ClientFetchAll extends ClientEvent{}
 
 final class ClientErase extends ClientEvent{
   final String id;

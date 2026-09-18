@@ -2,6 +2,7 @@ import 'package:get_it/get_it.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:tailor_made/core/constants/enums.dart';
+import 'package:tailor_made/core/utils/input_converter.dart';
 import 'package:tailor_made/features/client/data/models/client_model.dart';
 import 'package:tailor_made/features/client/data/datasources/client_local_datasource.dart';
 import 'package:tailor_made/features/client/domain/usecases/erase_client.dart';
@@ -16,12 +17,9 @@ import 'package:tailor_made/features/client/presentation/bloc/client_bloc.dart';
 
 import 'package:uuid/uuid.dart';
 
-final serviceLocator = GetIt.instance;
-
+final sl = GetIt.instance;
 
 Future<void> initDependencies() async {
-
-
   String hivePath = (await getApplicationDocumentsDirectory()).path;
   Hive.init(hivePath);
 
@@ -30,78 +28,47 @@ Future<void> initDependencies() async {
 
   Box<ClientModel> clientBox = await Hive.openBox<ClientModel>('clients');
 
-  serviceLocator.registerLazySingleton(() => clientBox);
+  sl.registerLazySingleton(() => clientBox);
 
   Uuid uuid = const Uuid();
 
-  serviceLocator.registerLazySingleton(() => uuid);
+  sl.registerLazySingleton(() => uuid);
+
+  sl.registerLazySingleton(() => InputConverter());
 
   _initClient();
 }
 
 void _initClient() {
-  
-  serviceLocator 
+  sl
     //LocalDataSource
-    ..registerFactory<ClientLocalDataSource>(
-      () => ClientLocalDataSourceImpl(
-        serviceLocator(),
-      )
-    )
+    ..registerLazySingleton<ClientLocalDataSource>(() => ClientLocalDataSourceImpl(
+          sl(),
+        ))
 
     //Repository
-    ..registerFactory<ClientRepository>(
-      () => ClientRepositoryImpl(
-        serviceLocator(),
-        serviceLocator(),
-      )
-    )
+    ..registerLazySingleton<ClientRepository>(() => ClientRepositoryImpl(
+          sl(),
+          sl(),
+        ))
 
     //Usecases
-    ..registerFactory(
-      () => SaveClient(
-        serviceLocator()
-      )
-    )
+    ..registerLazySingleton(() => SaveClient(sl()))
+    ..registerLazySingleton(() => FetchClients(sl()))
+    ..registerLazySingleton(() => EraseClient(sl()))
+    ..registerLazySingleton(() => SaveClientMeasurements(sl()))
+    ..registerLazySingleton(() => EditClientMeasurements(sl()))
+    ..registerLazySingleton(() => EditClient(sl()))
+    
 
-    ..registerFactory(
-      () => FetchClients(
-        serviceLocator()
-      )
-    )
-
-    ..registerFactory(
-      () => EraseClient(
-        serviceLocator()
-      )
-    )
-    ..registerFactory(
-      () => SaveClientMeasurements(
-        serviceLocator()
-      )
-    )
-
-    ..registerFactory(
-      () => EditClientMeasurements(
-        serviceLocator()
-      )
-    )
-
-    ..registerFactory(
-      () => EditClient(
-        serviceLocator()
-      )
-    )
-
-    //bloc 
-    ..registerLazySingleton(
-      () => ClientBloc(
-        saveClient: serviceLocator(),
-        fetchClients: serviceLocator(),
-        eraseClient: serviceLocator(),
-        saveMeasurements: serviceLocator(),
-        editClient: serviceLocator(),
-        editClientMeasurements: serviceLocator(),
-      )
-    );
+    //bloc
+    ..registerFactory(() => ClientBloc(
+          saveClient: sl(),
+          fetchClients: sl(),
+          eraseClient: sl(),
+          saveMeasurements: sl(),
+          editClient: sl(),
+          editClientMeasurements: sl(),
+          inputConverter: sl(),
+        ));
 }

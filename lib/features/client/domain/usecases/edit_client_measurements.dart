@@ -1,6 +1,7 @@
 import 'package:fpdart/fpdart.dart';
 import 'package:tailor_made/features/client/domain/repositories/client_repository.dart';
 import 'package:tailor_made/core/usecase/usecase.dart';
+import 'package:equatable/equatable.dart';
 import 'package:tailor_made/core/error/failures.dart';
 
 class EditClientMeasurements implements UseCase<void,EditMeasurementParams> {
@@ -13,9 +14,12 @@ class EditClientMeasurements implements UseCase<void,EditMeasurementParams> {
   }
 }
 
-class EditMeasurementParams {
-  String id;
-  Map <String, dynamic>? measurements;
+class EditMeasurementParams extends Equatable {
+  final String id;
+  final Map <String, dynamic>? measurements;
 
-  EditMeasurementParams({required this.id, required this.measurements});
+  const EditMeasurementParams({required this.id, required this.measurements});
+
+  @override 
+  List<Object?> get props => [id, measurements];
 }

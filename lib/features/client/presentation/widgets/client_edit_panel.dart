@@ -92,7 +92,7 @@ class ClientEditPanelState extends State<ClientEditPanel> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              CircleAvatar(radius: 35),
+              const CircleAvatar(radius: 35),
               SizedBox(
                 width: 205,
                 child: Column(

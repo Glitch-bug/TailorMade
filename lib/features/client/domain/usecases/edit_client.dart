@@ -1,3 +1,4 @@
+import 'package:equatable/equatable.dart';
 import 'package:tailor_made/core/usecase/usecase.dart';
 import 'package:tailor_made/core/constants/enums.dart';
 import 'package:fpdart/fpdart.dart';
@@ -15,7 +16,7 @@ class EditClient implements UseCase<void, ClientEditParams> {
 
 }
 
-class ClientEditParams {
+class ClientEditParams extends Equatable{
   final String id;
   final String firstName;
   final String lastName;
@@ -32,4 +33,7 @@ class ClientEditParams {
     required this.gender,
     required this.phoneNumber
   });
+
+  @override 
+  List<Object> get props => [id, firstName, lastName, address, gender, email, phoneNumber];
 }

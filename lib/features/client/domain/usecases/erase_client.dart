@@ -1,3 +1,4 @@
+import 'package:equatable/equatable.dart';
 import 'package:tailor_made/core/usecase/usecase.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:tailor_made/core/error/failures.dart';
@@ -15,9 +16,12 @@ class EraseClient implements UseCase<void, IdParams> {
 }
 
 
-class IdParams {
+class IdParams extends Equatable {
   final String id;
   const IdParams({
     required this.id
   });
+
+  @override
+  List<Object> get props => [id];
 }

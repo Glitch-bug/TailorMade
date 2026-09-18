@@ -56,7 +56,7 @@ void main() {
         gender: any(named: 'gender'),
         address: any(named: 'address'),
       ),
-    ).thenAnswer((_) async => Left(failure));
+    ).thenAnswer((_) async => const Left(failure));
   }
 
   group('Should return ', () {

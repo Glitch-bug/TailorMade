@@ -1,3 +1,4 @@
+import 'package:equatable/equatable.dart';
 import 'package:tailor_made/core/usecase/usecase.dart';
 import 'package:tailor_made/features/client/domain/repositories/client_repository.dart';
 import 'package:tailor_made/core/error/failures.dart';
@@ -18,7 +19,7 @@ class SaveClient implements UseCase<void, ClientParams> {
 
 }
 
-class ClientParams {
+class ClientParams extends Equatable {
   final String firstName;
   final String lastName;
   final String phoneNumber;
@@ -34,4 +35,7 @@ class ClientParams {
     required this.email,
     required this.address,
   });
+
+  @override
+  List<Object> get props => [firstName, lastName, phoneNumber, gender, email, address];
 }

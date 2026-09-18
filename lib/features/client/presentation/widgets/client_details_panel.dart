@@ -15,9 +15,9 @@ class ClientDetailsPanel extends StatelessWidget {
       // mainAxisAlignment: MainAxisAlignment.spaceAround,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Align(
+        const Align(
           alignment: Alignment.center,
-          child: const CircleAvatar(
+          child: CircleAvatar(
             radius: 70,
             backgroundColor: Colors.white,
           ),
@@ -54,7 +54,7 @@ class ClientDetailsPanel extends StatelessWidget {
             ],
           ),
         ),
-        SizedBox(height: 30),
+        const SizedBox(height: 30),
 
   
         Padding(

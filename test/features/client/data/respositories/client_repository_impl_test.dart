@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:fpdart/fpdart.dart';
@@ -253,12 +251,12 @@ void main() {
       arrangeReturnNull();
 
       final result = await repositoryImpl
-          .editClientMeasurements(id: "1", measurements: json.decode(fixture("measurements.json")));
+          .editClientMeasurements(id: "1", measurements: fixture("measurements.json"));
 
       expect(result, const Right(null));
 
       verify(() => mockClientLocalDataSource
-          .editClientMeasurements(id: "1", measurements: json.decode(fixture("measurements.json"))));
+          .editClientMeasurements(id: "1", measurements: fixture("measurements.json")));
       verifyNoMoreInteractions(mockClientLocalDataSource);
     });
 
@@ -266,12 +264,12 @@ void main() {
       arrangeThrowException();
 
       final result = await repositoryImpl
-          .editClientMeasurements(id: "1", measurements: json.decode(fixture("measurements.json")));
+          .editClientMeasurements(id: "1", measurements: fixture("measurements.json"));
 
       expect(result, const Left(LocalStorageFailure(errorMessage)));
 
       verify(() => mockClientLocalDataSource
-          .editClientMeasurements(id: "1", measurements:json.decode(fixture("measurements.json"))));
+          .editClientMeasurements(id: "1", measurements:fixture("measurements.json")));
       verifyNoMoreInteractions(mockClientLocalDataSource);
     });
   });
@@ -293,23 +291,23 @@ void main() {
       arrangeReturnNull();
 
       final result = await repositoryImpl
-          .saveClientMeasurements(id: "1", measurements: json.decode(fixture("measurements.json")));
+          .saveClientMeasurements(id: "1", measurements: fixture("measurements.json"));
 
       expect(result, const Right(null));
       verify(() => mockClientLocalDataSource.saveClientMeasurements(
           id: "1",
-          measurements: json.decode(fixture("measurements.json")))).called(1);
+          measurements: fixture("measurements.json"))).called(1);
       verifyNoMoreInteractions(mockClientLocalDataSource);
     });
     test(' should return LocalStorageFailure on exception', () async {
       arrangeThrowException();
 
       final result = await repositoryImpl
-          .saveClientMeasurements(id: "1", measurements: json.decode(fixture("measurements.json")));
+          .saveClientMeasurements(id: "1", measurements: fixture("measurements.json"));
 
       expect(result, const Left(LocalStorageFailure(errorMessage)));
       verify(() => mockClientLocalDataSource.saveClientMeasurements(
-          id: "1", measurements: json.decode(fixture("measurements.json")))).called(1);
+          id: "1", measurements: fixture("measurements.json"))).called(1);
       verifyNoMoreInteractions(mockClientLocalDataSource);
     });
   });

@@ -93,12 +93,12 @@ class _DeleteClientDialog extends StatelessWidget {
           onPressed: () {
             Navigator.pop(context);
           },
-          child: Text("No"),
+          child: const Text("No"),
         ),
         ElevatedButton(onPressed: (){
           onDelete();
           Navigator.pop(context);
-        }, child: Text("Yes"))
+        }, child: const Text("Yes"))
       ])
     ])));
   }
