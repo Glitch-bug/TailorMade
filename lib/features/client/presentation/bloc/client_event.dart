@@ -3,6 +3,11 @@ part of 'client_bloc.dart';
 @immutable 
 sealed class ClientEvent {}
 
+
+final class ClientReset extends ClientEvent {
+  
+}
+
 final class ClientSave extends ClientEvent {
   final String firstName;
   final String lastName;

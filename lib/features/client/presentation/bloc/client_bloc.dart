@@ -45,8 +45,13 @@ class ClientBloc extends Bloc<ClientEvent, ClientState> {
     on<ClientMeasurementsSave>(_onClientMeasurementsSave);
     on<ClientEdit>(_onClientEdit);
     on<ClientMeasurementsEdit>(_onClientMeasurementsEdit);
+    on<ClientReset>(_onClientReset);
   }
 
+
+  void _onClientReset(ClientReset event, Emitter<ClientState> emit) {
+    emit(ClientInitial());
+  }
   Future<void> _onClientSave(
     ClientSave event,
     Emitter<ClientState> emit,
@@ -81,6 +86,7 @@ class ClientBloc extends Bloc<ClientEvent, ClientState> {
     ClientFetchAll event,
     Emitter<ClientState> emit,
   ) async {
+  
     final res = await _fetchClients(NoParams());
 
     res.fold(

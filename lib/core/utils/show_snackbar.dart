@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-void showSnackBar({context, text, color = Colors.green, textColor = Colors.white}) {
+void showSnackBar({required BuildContext context, text, color = Colors.green, textColor = Colors.white}) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
-      backgroundColor: Colors.green,
+      backgroundColor: color,
       content: Text(text,
           style: TextStyle(
             color: textColor,

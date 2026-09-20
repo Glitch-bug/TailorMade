@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tailor_made/core/constants/enums.dart';
 import 'package:tailor_made/core/theme/app_pallete.dart';
+import 'package:tailor_made/core/utils/show_snackbar.dart';
+import 'package:tailor_made/core/widgets/loading_widget.dart';
 import 'package:tailor_made/features/client/domain/entities/client.dart';
 import 'package:tailor_made/features/client/presentation/widgets/client_details_panel.dart';
 import 'package:tailor_made/features/client/presentation/bloc/client_bloc.dart';
@@ -13,7 +15,7 @@ import 'package:tailor_made/features/client/presentation/widgets/client_measurem
 class ClientsListPage extends StatefulWidget {
   const ClientsListPage({super.key});
 
-  static route() => MaterialPageRoute(
+  Route route() => MaterialPageRoute(
       builder: (BuildContext context) => const ClientsListPage());
 
   @override
@@ -39,13 +41,14 @@ class _ClientsListPageState extends State<ClientsListPage> {
       return match;
     }).toList();
 
-    clients.sort((a, b) => "${a.firstName} ${a.lastName}".compareTo("${a.firstName} ${a.lastName}"));
+    clients.sort((a, b) => "${a.firstName} ${a.lastName}"
+        .compareTo("${a.firstName} ${a.lastName}"));
   }
 
   void _updateSelected({required Client? select}) {
     selected = rawClients.cast<Client?>().firstWhere(
-      (client){
-        return  select?.id == client?.id;
+      (client) {
+        return select?.id == client?.id;
       },
       orElse: () => null,
     );
@@ -105,6 +108,9 @@ class _ClientsListPageState extends State<ClientsListPage> {
           ],
         ),
         body: BlocConsumer<ClientBloc, ClientState>(
+          listenWhen: (previous, current) {
+            return previous != current;
+          },
           listener: (context, state) {
             if (state is ClientChangeSuccess) {
               context.read<ClientBloc>().add(ClientFetchAll());
@@ -113,10 +119,20 @@ class _ClientsListPageState extends State<ClientsListPage> {
               _updateSelected(select: selected);
               _filterClients(query: searchController.text);
               setState(() {});
-            }
-          },
+            } else if (state is ClientFailure) {
+              showSnackBar(
+                context: context,
+                text: state.error,
+                color: Colors.red,
+              );
+            } 
+          }, 
           builder: (context, state) {
-            if (state is ClientDisplaySuccess && state.clients.isEmpty) {
+            if (state is ClientLoading) {
+              return const Center(
+                  child: LoadingWidget()
+                  );
+            } else if (state is ClientDisplaySuccess && state.clients.isEmpty) {
               return Row(
                 children: [
                   SizedBox(
@@ -134,7 +150,7 @@ class _ClientsListPageState extends State<ClientsListPage> {
                   ),
                 ],
               );
-            } else if (state is ClientDisplaySuccess) {
+            } else {
               return Row(
                 children: [
                   Container(
@@ -155,25 +171,26 @@ class _ClientsListPageState extends State<ClientsListPage> {
                         ),
                       ),
                     ),
-                    child: (selected != null)
-                        ? switch (panelState) {
-                            null => ClientDetailsPanel(
-                                client: selected!,
-                                measurements: () {
-                                  appState = AppState.measurements;
-                                  setState(() {});
-                                },
-                              ),
-                            PanelState.editClient => ClientEditPanel(
-                                client: selected,
-                                onClose: () {
-                                  panelState = null;
-                                  // selected = null;
-                                  setState(() {});
-                                },
-                              )
-                          }
-                        : const SizedBox(),
+                    child: SingleChildScrollView(
+                      child: (selected != null)
+                          ? switch (panelState) {
+                              null => ClientDetailsPanel(
+                                  client: selected!,
+                                  measurements: () {
+                                    appState = AppState.measurements;
+                                    setState(() {});
+                                  },
+                                ),
+                              PanelState.editClient => ClientEditPanel(
+                                  client: selected,
+                                  onClose: () {
+                                    panelState = null;
+                                    setState(() {});
+                                  },
+                                )
+                            }
+                          : const SizedBox(),
+                    ),
                   ),
                   Expanded(
                       flex: 4,
@@ -207,4 +224,3 @@ class _ClientsListPageState extends State<ClientsListPage> {
     );
   }
 }
-

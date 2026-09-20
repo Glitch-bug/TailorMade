@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tailor_made/core/theme/app_pallete.dart';
+import 'package:tailor_made/core/utils/show_snackbar.dart';
+import 'package:tailor_made/core/validators/app_validators.dart';
 import 'package:tailor_made/features/client/presentation/widgets/form_input.dart';
 import 'package:tailor_made/features/client/presentation/bloc/client_bloc.dart';
 import 'package:tailor_made/features/client/presentation/widgets/form_dropdown_menu.dart';
 import 'package:tailor_made/core/constants/enums.dart';
 import 'package:tailor_made/features/client/presentation/pages/clients_list_page.dart';
 
-
 class AddClientPage extends StatefulWidget {
   const AddClientPage({super.key});
 
-  route() => MaterialPageRoute(
+  Route route() => MaterialPageRoute(
       builder: (BuildContext context) => const AddClientPage());
 
   @override
@@ -26,6 +27,7 @@ class _AddClientPageState extends State<AddClientPage> {
   final phoneController = TextEditingController();
   final genderController = TextEditingController();
   String gender = "";
+  final _formKey = GlobalKey<FormState>();
 
   @override
   void dispose() {
@@ -37,18 +39,17 @@ class _AddClientPageState extends State<AddClientPage> {
     super.dispose();
   }
 
-
   void saveClient() {
     context.read<ClientBloc>().add(
-      ClientSave(
-        firstName: firstNameController.text.trim(),
-        lastName: lastNameController.text.trim(),
-        email: emailController.text.trim(),
-        address: addressController.text.trim(),
-        phoneNumber: phoneController.text.trim(),
-        gender: Gender.fromValue(gender),
-      ), 
-    );
+          ClientSave(
+            firstName: firstNameController.text.trim(),
+            lastName: lastNameController.text.trim(),
+            email: emailController.text.trim(),
+            address: addressController.text.trim(),
+            phoneNumber: phoneController.text.trim(),
+            gender: gender,
+          ),
+        );
   }
 
   @override
@@ -59,14 +60,35 @@ class _AddClientPageState extends State<AddClientPage> {
           "Create New Client",
         ),
       ),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          // child: Card(
+      body: BlocListener<ClientBloc, ClientState>(
+        listenWhen: (previous, current) {
+          return previous != current;
+        },
+        listener: (context, state) {
+          if (state is ClientFailure) {
+            showSnackBar(
+              context: context,
+              text: state.error,
+              color: Colors.red,
+            );
+
+            context.read<ClientBloc>().add(ClientReset());
+          } else if (state is ClientSaveSuccess) {
+            Navigator.push(
+              context,
+              const ClientsListPage().route(),
+            );
+          }
+        },
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            // child: Card(
             child: SizedBox(
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Form(
+                  key: _formKey,
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
@@ -81,6 +103,7 @@ class _AddClientPageState extends State<AddClientPage> {
                                 controller: firstNameController,
                                 label: "First Name",
                                 hintText: "Anne",
+                                validator: AppValidators.requiredField,
                               ),
                             ),
                             Expanded(
@@ -88,6 +111,7 @@ class _AddClientPageState extends State<AddClientPage> {
                                 controller: lastNameController,
                                 label: "Last Name",
                                 hintText: "Yiadom",
+                                validator: AppValidators.requiredField,
                               ),
                             ),
                           ],
@@ -97,6 +121,7 @@ class _AddClientPageState extends State<AddClientPage> {
                           label: "Phone Number",
                           hintText: "0243456789",
                           inputType: TextInputType.number,
+                          validator: AppValidators.requiredField,
                         ),
                         Row(
                           children: [
@@ -105,7 +130,7 @@ class _AddClientPageState extends State<AddClientPage> {
                                 label: "Gender",
                                 hintText: "--Select Client Gender--",
                                 controller: genderController,
-                                onSelected: (value){
+                                onSelected: (value) {
                                   setState(() {
                                     gender = value;
                                   });
@@ -118,6 +143,7 @@ class _AddClientPageState extends State<AddClientPage> {
                                 controller: emailController,
                                 label: "Email",
                                 hintText: "AnneAtoubi@gmail.com",
+                                validator: AppValidators.requiredField,
                               ),
                             )
                           ],
@@ -126,19 +152,16 @@ class _AddClientPageState extends State<AddClientPage> {
                           controller: addressController,
                           label: "Address",
                           hintText: "Maame Sekune, Community 1, Tema",
+                          validator: AppValidators.requiredField
                         ),
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             minimumSize: const Size(double.infinity, 60),
                           ),
                           onPressed: () {
-                            
-                            saveClient();
-                    
-                            Navigator.push(
-                              context,
-                              ClientsListPage.route(),
-                            );
+                            if (_formKey.currentState!.validate()) {
+                              saveClient();
+                            }
                           },
                           child: const Text("Save"),
                         )
@@ -148,7 +171,8 @@ class _AddClientPageState extends State<AddClientPage> {
                 ),
               ),
             ),
-          // ),
+            // ),
+          ),
         ),
       ),
     );

@@ -8,9 +8,11 @@ class FormInput extends StatelessWidget {
   final String? hintText;
   final TextInputType inputType;
   final TextEditingController? controller;
+  final String? Function(String?)? validator;
 
   const FormInput({
     required this.label,
+    this.validator,
     this.hintText,
     this.inputType = TextInputType.text,
     this.controller,
@@ -32,9 +34,10 @@ class FormInput extends StatelessWidget {
             padding: const EdgeInsets.symmetric(vertical:6.0),
             child: SizedBox(
               height: null,
-              child: TextField(
+              child: TextFormField(
                 controller: controller,
                 keyboardType: inputType,
+                validator: validator,
                 inputFormatters: (inputType == TextInputType.number)?[
                   FilteringTextInputFormatter.digitsOnly,
                 ]:[],

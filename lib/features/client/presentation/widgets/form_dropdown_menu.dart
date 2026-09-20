@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:tailor_made/core/constants/enums.dart';
 import 'package:tailor_made/features/client/presentation/widgets/label.dart';
 
-class FormDropDownMenu<T extends DropdownEntry> extends StatelessWidget {
+class FormDropDownMenu<T extends DropdownEntry, M extends FormField> extends StatelessWidget {
   final String label;
   final List<T> items;
   final String? hintText;
   final ValueChanged? onSelected;
   final TextEditingController? controller;
+  // final String? Fucntion(String?) validator;
   const FormDropDownMenu({
     required this.items,
     required this.label,
