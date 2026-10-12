@@ -111,7 +111,7 @@ void main() {
         gender: client.gender,
       );
       // print(result);
-      expect(result, equals(const Left(LocalStorageFailure(errorMessage))));
+      expect(result, equals(const Left(LocalStorageFailure())));
       // verify(() => mockClientLocalDataSource.addClient(client: clientModels.first)).called(1);
       // verifyNoMoreInteractions(mockClientLocalDataSource);
     });
@@ -163,7 +163,7 @@ void main() {
         gender: client.gender,
       );
 
-      expect(result, const Left(LocalStorageFailure(errorMessage)));
+      expect(result, const Left(LocalStorageFailure()));
       // verify(() => mockClientLocalDataSource.editClient(client: ClientModel.fromEntity(client))).called(1);
       // verifyNoMoreInteractions(mockClientLocalDataSource);
     });
@@ -195,7 +195,7 @@ void main() {
       arrangeThrowException();
       final result = await repositoryImpl.getClients();
 
-      expect(result, equals(const Left(LocalStorageFailure(errorMessage))));
+      expect(result, equals(const Left(LocalStorageFailure())));
       verify(() => mockClientLocalDataSource.getClients()).called(1);
       verifyNoMoreInteractions(mockClientLocalDataSource);
     });
@@ -227,7 +227,7 @@ void main() {
 
       final result = await repositoryImpl.eraseClient(id: "1");
 
-      expect(result, equals(const Left(LocalStorageFailure(errorMessage))));
+      expect(result, equals(const Left(LocalStorageFailure())));
 
       verify(() => mockClientLocalDataSource.eraseClient(id: "1")).called(1);
       verifyNoMoreInteractions(mockClientLocalDataSource);
@@ -266,7 +266,7 @@ void main() {
       final result = await repositoryImpl
           .editClientMeasurements(id: "1", measurements: fixture("measurements.json"));
 
-      expect(result, const Left(LocalStorageFailure(errorMessage)));
+      expect(result, const Left(LocalStorageFailure()));
 
       verify(() => mockClientLocalDataSource
           .editClientMeasurements(id: "1", measurements:fixture("measurements.json")));
@@ -305,7 +305,7 @@ void main() {
       final result = await repositoryImpl
           .saveClientMeasurements(id: "1", measurements: fixture("measurements.json"));
 
-      expect(result, const Left(LocalStorageFailure(errorMessage)));
+      expect(result, const Left(LocalStorageFailure()));
       verify(() => mockClientLocalDataSource.saveClientMeasurements(
           id: "1", measurements: fixture("measurements.json"))).called(1);
       verifyNoMoreInteractions(mockClientLocalDataSource);

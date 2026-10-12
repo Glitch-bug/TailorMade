@@ -8,7 +8,7 @@ part of 'enums.dart';
 
 class GenderAdapter extends TypeAdapter<Gender> {
   @override
-  final int typeId = 2;
+  final typeId = 2;
 
   @override
   Gender read(BinaryReader reader) {
@@ -27,10 +27,8 @@ class GenderAdapter extends TypeAdapter<Gender> {
     switch (obj) {
       case Gender.male:
         writer.writeByte(0);
-        break;
       case Gender.female:
         writer.writeByte(1);
-        break;
     }
   }
 

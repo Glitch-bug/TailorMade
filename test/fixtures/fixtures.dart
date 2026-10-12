@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:tailor_made/core/constants/enums.dart';
+import 'package:tailor_made/core/constants/strings.dart';
 import 'package:tailor_made/core/extensions/datetime_extension.dart';
 import 'package:tailor_made/features/client/data/models/client_model.dart';
 import 'package:tailor_made/features/client/domain/entities/client.dart';
@@ -91,10 +92,12 @@ final clientModelMeasurements = ClientModel(
       email: 'kofi@gmail.com',
       dateAdded: DateTime.now().format(),
       measurements: fixture("measurements.json"),
+      avatar: avatar,
     );
 
 final clientModel = clientModels.last;
 
-const String errorMessage = "An unexpected local storage error occured";
+const avatar = "baaba.svg";
+const String errorMessage = AppStrings.localStorageFailure;
 
 Map<String, dynamic> fixture(String name) => json.decode(File('test/fixtures/$name').readAsStringSync());

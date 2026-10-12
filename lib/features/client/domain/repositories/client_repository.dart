@@ -13,6 +13,7 @@ abstract interface class ClientRepository {
     required Gender gender,
     required String email,
     required String address,
+    String? avatar,
   });
 
   Future<Either<Failure, void>> editClient({

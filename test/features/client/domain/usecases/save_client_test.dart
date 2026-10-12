@@ -3,6 +3,7 @@ import 'package:mocktail/mocktail.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:tailor_made/core/constants/enums.dart';
 import 'package:tailor_made/core/error/failures.dart';
+import '../../../../fixtures/fixtures.dart';
 import '../../../../helpers/mock_repositories.dart';
 import 'package:tailor_made/features/client/domain/usecases/save_client.dart';
 
@@ -28,6 +29,7 @@ void main() {
         email: any(named: 'email'),
         gender: any(named: 'gender'),
         address: any(named: 'address'),
+        avatar: any(named: 'avatar')
       ),
     ).thenAnswer((_) async => const Right(null));
   }
@@ -41,6 +43,7 @@ void main() {
         email: any(named: 'email'),
         gender: any(named: 'gender'),
         address: any(named: 'address'),
+        avatar: any(named: 'avatar')
       ),
     ).thenAnswer((_) async => const Left(LocalStorageFailure()));
   }
@@ -52,6 +55,7 @@ void main() {
     email: 'BenDover@gmail.com',
     address: 'Memory Lane',
     gender: Gender.male,
+    avatar: avatar
   );
 
   group('Should return', () {
@@ -69,6 +73,7 @@ void main() {
           email: 'BenDover@gmail.com',
           address: 'Memory Lane',
           gender: Gender.male,
+          avatar: avatar,
         ),
       ).called(1);
       verifyNoMoreInteractions(mockClientRepository);
@@ -89,6 +94,7 @@ void main() {
           email: 'BenDover@gmail.com',
           address: 'Memory Lane',
           gender: Gender.male,
+          avatar: avatar,
         ),
       ).called(1);
       verifyNoMoreInteractions(mockClientRepository);

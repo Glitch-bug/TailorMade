@@ -6,6 +6,7 @@ class Client extends Equatable {
   final String firstName;
   final String lastName;
   final String phoneNumber;
+  final String? avatar;
   final Gender gender;
   final String email;
   final String address;
@@ -14,6 +15,7 @@ class Client extends Equatable {
 
   const Client({
     required this.id,
+    this.avatar,
     required this.firstName,
     required this.lastName,
     required this.phoneNumber,
@@ -25,5 +27,5 @@ class Client extends Equatable {
   });
 
   @override
-  List<Object?> get props => [id, firstName, lastName, phoneNumber, gender, email, address, measurements];
+  List<Object?> get props => [id, firstName, lastName, phoneNumber, gender, email, address, measurements, avatar];
 }

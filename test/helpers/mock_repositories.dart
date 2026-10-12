@@ -28,6 +28,7 @@ void registerFallbackValues() {
       gender: Gender.male,
       email: 'km@gmail.com',
       dateAdded: DateTime.now().format(),
+      avatar: "baaba.svg",
     ),
   );
 
@@ -39,6 +40,7 @@ void registerFallbackValues() {
       address: 'Accra, Airport Residential',
       gender: Gender.male,
       email: 'km@gmail.com',
+      avatar: "baaba.svg"
     ),
   );
 

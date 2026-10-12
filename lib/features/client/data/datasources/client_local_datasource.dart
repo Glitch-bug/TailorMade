@@ -1,7 +1,7 @@
 import 'package:tailor_made/features/client/data/models/client_model.dart';
 import 'package:tailor_made/core/error/exceptions.dart';
 import 'package:tailor_made/core/constants/strings.dart';
-import 'package:hive/hive.dart';
+import 'package:hive_ce/hive_ce.dart';
 
 abstract class ClientLocalDataSource {
   Future<void> addClient({required ClientModel client});

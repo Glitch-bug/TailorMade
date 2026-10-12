@@ -27,7 +27,7 @@ void main() {
 
       final result = inputConverter.stringToGender(str);
 
-      expect(result, Left(InvalidInputFailure(const FormatException(AppStrings.invalidGender).toString())));
+      expect(result, Left(InvalidInputFailure(message: const FormatException(AppStrings.invalidGender).toString())));
     });
 
 

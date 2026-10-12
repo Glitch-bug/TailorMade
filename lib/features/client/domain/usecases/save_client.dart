@@ -12,7 +12,7 @@ class SaveClient implements UseCase<void, ClientParams> {
 
   @override 
   Future<Either<Failure, void>> call(ClientParams params) async{
-    return await clientRepository.addClient(firstName: params.firstName, lastName: params.lastName, phoneNumber: params.phoneNumber, gender: params.gender, email: params.email, address: params.address,);
+    return await clientRepository.addClient(firstName: params.firstName, lastName: params.lastName, phoneNumber: params.phoneNumber, gender: params.gender, email: params.email, address: params.address, avatar: params.avatar);
   }
 
 
@@ -26,6 +26,7 @@ class ClientParams extends Equatable {
   final Gender gender;
   final String email;
   final String address;
+  final String? avatar;
 
   const ClientParams({
     required this.firstName,
@@ -34,8 +35,9 @@ class ClientParams extends Equatable {
     required this.gender,
     required this.email,
     required this.address,
+    required this.avatar,
   });
 
   @override
-  List<Object> get props => [firstName, lastName, phoneNumber, gender, email, address];
+  List<Object?> get props => [firstName, lastName, phoneNumber, gender, email, address, avatar];
 }

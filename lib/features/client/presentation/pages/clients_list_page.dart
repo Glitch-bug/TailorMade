@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tailor_made/core/constants/enums.dart';
 import 'package:tailor_made/core/theme/app_pallete.dart';
-import 'package:tailor_made/core/utils/show_snackbar.dart';
 import 'package:tailor_made/core/widgets/loading_widget.dart';
 import 'package:tailor_made/features/client/domain/entities/client.dart';
 import 'package:tailor_made/features/client/presentation/widgets/client_details_panel.dart';
@@ -119,13 +118,7 @@ class _ClientsListPageState extends State<ClientsListPage> {
               _updateSelected(select: selected);
               _filterClients(query: searchController.text);
               setState(() {});
-            } else if (state is ClientFailure) {
-              showSnackBar(
-                context: context,
-                text: state.error,
-                color: Colors.red,
-              );
-            } 
+            }
           }, 
           builder: (context, state) {
             if (state is ClientLoading) {
@@ -217,7 +210,6 @@ class _ClientsListPageState extends State<ClientsListPage> {
                 ],
               );
             }
-            return const SizedBox();
           },
         ),
       ),

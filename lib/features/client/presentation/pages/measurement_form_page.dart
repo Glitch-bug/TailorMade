@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tailor_made/core/extensions/iterable_extension.dart';
 import 'package:tailor_made/core/extensions/string_extension.dart';
-import 'package:tailor_made/core/utils/show_snackbar.dart';
 import 'package:tailor_made/core/validators/app_validators.dart';
 import 'package:tailor_made/features/client/domain/entities/client.dart';
 import 'package:tailor_made/features/client/presentation/bloc/client_bloc.dart';
@@ -86,13 +85,7 @@ class MainBody extends StatelessWidget {
         return previous != current;
       },
       listener: (context, state) {
-        if (state is ClientFailure) {
-          showSnackBar(
-            context: context,
-            text: state.error,
-            color: Colors.red,
-          );
-        } else if (state is ClientMeasurementsSaveSuccess) {
+        if (state is ClientMeasurementsSaveSuccess) {
           Navigator.push(context, const ClientsListPage().route());
         }
       },

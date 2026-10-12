@@ -74,6 +74,7 @@ class ClientBloc extends Bloc<ClientEvent, ClientState> {
       phoneNumber: event.phoneNumber,
       email: event.email,
       address: event.address,
+      avatar: event.avatar,
     ));
 
     res.fold(

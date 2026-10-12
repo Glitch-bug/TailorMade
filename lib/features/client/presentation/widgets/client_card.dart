@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:tailor_made/core/theme/app_pallete.dart';
 import 'package:tailor_made/features/client/domain/entities/client.dart';
 
@@ -23,8 +24,8 @@ class ClientCard extends StatelessWidget {
       child: Card(
         margin: EdgeInsets.zero,
         shape: const BeveledRectangleBorder(),
-        // margin: const EdgeInsets.all(10),
 
+        // margin: const EdgeInsets.all(10),
         color: AppPallete.secondary,
         // const Color.fromARGB(255, 51, 54, 60),
         child: Padding(
@@ -33,16 +34,20 @@ class ClientCard extends StatelessWidget {
             mainAxisSize: MainAxisSize.max,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const CircleAvatar(
+              CircleAvatar(
                 backgroundColor: AppPallete.greyColor,
                 maxRadius: 50,
+                child: ClipOval(
+                  child: Visibility(
+                    visible: client.avatar != null,
+                    child: SvgPicture.asset(client.avatar ?? ""),
+                  ),
+                ),
               ),
               Column(
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Text("${client.firstName} ${client.lastName}"),
-                ],
+                children: [Text("${client.firstName} ${client.lastName}")],
               ),
               const Spacer(),
               SizedBox(
@@ -57,7 +62,10 @@ class ClientCard extends StatelessWidget {
                         showAdaptiveDialog(
                           context: context,
                           builder: (BuildContext con) {
-                            return _DeleteClientDialog(onDelete: delete, clientName: client.firstName);
+                            return _DeleteClientDialog(
+                              onDelete: delete,
+                              clientName: client.firstName,
+                            );
                           },
                         );
                       },
@@ -79,27 +87,42 @@ class _DeleteClientDialog extends StatelessWidget {
   final String clientName;
   const _DeleteClientDialog({required this.onDelete, required this.clientName});
 
+  @override
   Widget build(BuildContext context) {
     Size window = MediaQuery.of(context).size;
     return Dialog(
-        child: Container(
-          width: window.width * 0.3,
-          height: 100,
-            child: Column(children: [
-      Text(
-          "Are you sure you want to delete all info on $clientName? This action cannot be undone"),
-      Row(children: [
-        ElevatedButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          child: const Text("No"),
+      shape: const BeveledRectangleBorder(),
+      child: Container(
+        padding: const EdgeInsets.all(10.0),
+        width: window.width * 0.3,
+        height: 100,
+        child: Column(
+          children: [
+            Text(
+              "Are you sure you want to delete all info on $clientName? This action cannot be undone",
+            ),
+            Row(
+              spacing: 5,
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Text("No"),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    onDelete();
+                    Navigator.pop(context);
+                  },
+                  child: const Text("Yes"),
+                ),
+              ],
+            ),
+          ],
         ),
-        ElevatedButton(onPressed: (){
-          onDelete();
-          Navigator.pop(context);
-        }, child: const Text("Yes"))
-      ])
-    ])));
+      ),
+    );
   }
 }

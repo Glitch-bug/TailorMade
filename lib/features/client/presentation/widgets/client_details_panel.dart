@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:tailor_made/features/client/presentation/widgets/item_row.dart';
 import 'package:tailor_made/features/client/presentation/pages/measurement_form_page.dart';
 import 'package:tailor_made/features/client/domain/entities/client.dart';
@@ -15,11 +16,12 @@ class ClientDetailsPanel extends StatelessWidget {
       // mainAxisAlignment: MainAxisAlignment.spaceAround,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Align(
+        Align(
           alignment: Alignment.center,
           child: CircleAvatar(
             radius: 70,
             backgroundColor: Colors.white,
+            child: ClipOval(child: Visibility(visible: client.avatar is String,child: SvgPicture.asset(client.avatar ?? ""))),
           ),
         ),
         SizedBox(

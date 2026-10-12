@@ -8,7 +8,7 @@ part of 'client_model.dart';
 
 class ClientModelAdapter extends TypeAdapter<ClientModel> {
   @override
-  final int typeId = 1;
+  final typeId = 1;
 
   @override
   ClientModel read(BinaryReader reader) {
@@ -26,13 +26,14 @@ class ClientModelAdapter extends TypeAdapter<ClientModel> {
       address: fields[6] as String,
       dateAdded: fields[7] as DateTime,
       measurements: (fields[8] as Map?)?.cast<String, dynamic>(),
+      avatar: fields[9] as String?,
     );
   }
 
   @override
   void write(BinaryWriter writer, ClientModel obj) {
     writer
-      ..writeByte(9)
+      ..writeByte(10)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -50,7 +51,9 @@ class ClientModelAdapter extends TypeAdapter<ClientModel> {
       ..writeByte(7)
       ..write(obj.dateAdded)
       ..writeByte(8)
-      ..write(obj.measurements);
+      ..write(obj.measurements)
+      ..writeByte(9)
+      ..write(obj.avatar);
   }
 
   @override
@@ -63,38 +66,3 @@ class ClientModelAdapter extends TypeAdapter<ClientModel> {
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
-
-// **************************************************************************
-// JsonSerializableGenerator
-// **************************************************************************
-
-_$ClientModelImpl _$$ClientModelImplFromJson(Map<String, dynamic> json) =>
-    _$ClientModelImpl(
-      id: json['id'] as String,
-      firstName: json['firstName'] as String,
-      lastName: json['lastName'] as String,
-      phoneNumber: json['phoneNumber'] as String,
-      gender: $enumDecode(_$GenderEnumMap, json['gender']),
-      email: json['email'] as String,
-      address: json['address'] as String,
-      dateAdded: DateTime.parse(json['dateAdded'] as String),
-      measurements: json['measurements'] as Map<String, dynamic>?,
-    );
-
-Map<String, dynamic> _$$ClientModelImplToJson(_$ClientModelImpl instance) =>
-    <String, dynamic>{
-      'id': instance.id,
-      'firstName': instance.firstName,
-      'lastName': instance.lastName,
-      'phoneNumber': instance.phoneNumber,
-      'gender': _$GenderEnumMap[instance.gender]!,
-      'email': instance.email,
-      'address': instance.address,
-      'dateAdded': instance.dateAdded.toIso8601String(),
-      'measurements': instance.measurements,
-    };
-
-const _$GenderEnumMap = {
-  Gender.male: 'male',
-  Gender.female: 'female',
-};

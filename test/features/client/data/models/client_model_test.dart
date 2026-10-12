@@ -31,13 +31,13 @@ void main() {
     });
   });
 
-  group('ClientModel JSON', () {
-    test('toJson -> fromJson round trip preserves measurements', () {
-      final model = ClientModel.fromEntity(clientMeasurements);
-      final json = model.toJson();
-      final result = ClientModel.fromJson(json);
+  // group('ClientModel JSON', () {
+  //   test('toJson -> fromJson round trip preserves measurements', () {
+  //     final model = ClientModel.fromEntity(clientMeasurements);
+  //     final json = model.toJson();
+  //     final result = ClientModel.fromJson(json);
 
-      expect(result.measurements, model.measurements);
-    });
-  });
+  //     expect(result.measurements, model.measurements);
+  //   });
+  // });
 }

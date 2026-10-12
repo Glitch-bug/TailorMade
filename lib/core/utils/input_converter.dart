@@ -15,7 +15,7 @@ class InputConverter {
       }
 
     } on FormatException catch(e) {
-      return Left(InvalidInputFailure(e.toString()));
+      return Left(InvalidInputFailure(message: e.toString()));
     }
 
   }
@@ -25,5 +25,5 @@ class InputConverter {
 
 class InvalidInputFailure extends Failure {
   @override 
-  const InvalidInputFailure([super.message = AppStrings.invalidGender]);
+  const InvalidInputFailure({super.message = AppStrings.invalidGender});
 }

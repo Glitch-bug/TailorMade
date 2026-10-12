@@ -1,6 +1,5 @@
 import 'package:get_it/get_it.dart';
-import 'package:hive/hive.dart';
-import 'package:path_provider/path_provider.dart';
+import 'package:hive_ce_flutter/hive_ce_flutter.dart';
 import 'package:tailor_made/core/constants/enums.dart';
 import 'package:tailor_made/core/utils/input_converter.dart';
 import 'package:tailor_made/features/client/data/models/client_model.dart';
@@ -20,20 +19,18 @@ import 'package:uuid/uuid.dart';
 final sl = GetIt.instance;
 
 Future<void> initDependencies() async {
-  String hivePath = (await getApplicationDocumentsDirectory()).path;
-  Hive.init(hivePath);
+  // String hivePath = (await getApplicationDocumentsDirectory()).path;
+  await Hive.initFlutter();
 
   Hive.registerAdapter(GenderAdapter());
   Hive.registerAdapter(ClientModelAdapter());
 
   Box<ClientModel> clientBox = await Hive.openBox<ClientModel>('clients');
 
-  sl.registerLazySingleton(() => clientBox);
-
+  sl.registerSingleton<Box<ClientModel>>(clientBox);
   Uuid uuid = const Uuid();
 
   sl.registerLazySingleton(() => uuid);
-
   sl.registerLazySingleton(() => InputConverter());
 
   _initClient();

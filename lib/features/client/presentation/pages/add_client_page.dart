@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tailor_made/core/theme/app_pallete.dart';
-import 'package:tailor_made/core/utils/show_snackbar.dart';
 import 'package:tailor_made/core/validators/app_validators.dart';
 import 'package:tailor_made/features/client/presentation/widgets/form_input.dart';
 import 'package:tailor_made/features/client/presentation/bloc/client_bloc.dart';
 import 'package:tailor_made/features/client/presentation/widgets/form_dropdown_menu.dart';
 import 'package:tailor_made/core/constants/enums.dart';
 import 'package:tailor_made/features/client/presentation/pages/clients_list_page.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class AddClientPage extends StatefulWidget {
   const AddClientPage({super.key});
@@ -27,6 +27,7 @@ class _AddClientPageState extends State<AddClientPage> {
   final phoneController = TextEditingController();
   final genderController = TextEditingController();
   String gender = "";
+  String avatar = "";
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -48,6 +49,7 @@ class _AddClientPageState extends State<AddClientPage> {
             address: addressController.text.trim(),
             phoneNumber: phoneController.text.trim(),
             gender: gender,
+            avatar: avatar,
           ),
         );
   }
@@ -65,15 +67,7 @@ class _AddClientPageState extends State<AddClientPage> {
           return previous != current;
         },
         listener: (context, state) {
-          if (state is ClientFailure) {
-            showSnackBar(
-              context: context,
-              text: state.error,
-              color: Colors.red,
-            );
-
-            context.read<ClientBloc>().add(ClientReset());
-          } else if (state is ClientSaveSuccess) {
+          if (state is ClientSaveSuccess) {
             Navigator.push(
               context,
               const ClientsListPage().route(),
@@ -91,10 +85,10 @@ class _AddClientPageState extends State<AddClientPage> {
                   key: _formKey,
                   child: SingleChildScrollView(
                     child: Column(
-                      children: [
-                        const CircleAvatar(
+                      children: [ CircleAvatar(
                           maxRadius: 125,
                           backgroundColor: AppPallete.greyColor,
+                          child: Visibility(visible: avatar.isNotEmpty, child: ClipOval(child: SvgPicture.asset(avatar, fit: BoxFit.contain)),)
                         ),
                         Row(
                           children: [
@@ -133,6 +127,8 @@ class _AddClientPageState extends State<AddClientPage> {
                                 onSelected: (value) {
                                   setState(() {
                                     gender = value;
+                                    final hold = Gender.fromValue(gender);
+                                    if (hold is Gender) avatar = Avatar.random(hold).path;
                                   });
                                 },
                                 items: Gender.values,
@@ -149,11 +145,10 @@ class _AddClientPageState extends State<AddClientPage> {
                           ],
                         ),
                         FormInput(
-                          controller: addressController,
-                          label: "Address",
-                          hintText: "Maame Sekune, Community 1, Tema",
-                          validator: AppValidators.requiredField
-                        ),
+                            controller: addressController,
+                            label: "Address",
+                            hintText: "Maame Sekune, Community 1, Tema",
+                            validator: AppValidators.requiredField),
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             minimumSize: const Size(double.infinity, 60),

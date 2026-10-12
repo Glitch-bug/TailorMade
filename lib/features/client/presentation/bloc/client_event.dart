@@ -15,6 +15,7 @@ final class ClientSave extends ClientEvent {
   final String email;
   final String gender;
   final String address;
+  final String? avatar;
 
   ClientSave({
     required this.firstName,
@@ -23,6 +24,7 @@ final class ClientSave extends ClientEvent {
     required this.phoneNumber,
     required this.email,
     required this.address,
+    this.avatar,
   });
 }
 

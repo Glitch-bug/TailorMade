@@ -23,7 +23,9 @@ class ClientRepositoryImpl implements ClientRepository {
       required String phoneNumber,
       required Gender gender,
       required String email,
-      required String address}) async {
+      required String address,
+      String? avatar,
+    }) async {
     return await _manipulateClient(
       () => clientLocalDataSource.addClient(
         client: ClientModel(
@@ -34,6 +36,7 @@ class ClientRepositoryImpl implements ClientRepository {
           address: address,
           phoneNumber: phoneNumber,
           gender: gender,
+          avatar: avatar,
           dateAdded: DateTime.now().format(),
         ),
       ),
@@ -74,7 +77,7 @@ class ClientRepositoryImpl implements ClientRepository {
 
       return right(clients);
     } on LocalStorageException catch (e) {
-      return left(LocalStorageFailure(e.message));
+      return left(LocalStorageFailure(message: e.message));
     }
   }
 
@@ -104,7 +107,7 @@ class ClientRepositoryImpl implements ClientRepository {
       await alterClient();
       return right(null);
     } on LocalStorageException catch (e) {
-      return left(LocalStorageFailure(e.message));
+      return left(LocalStorageFailure(message: e.message));
     }
   }
 }

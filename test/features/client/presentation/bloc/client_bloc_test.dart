@@ -130,10 +130,7 @@ void main() {
         email: client.email,
         address: client.address,
       )),
-      expect: () => [
-        ClientLoading(),
-        ClientFailure(AppStrings.invalidGender)
-      ],
+      expect: () => [ClientLoading(), ClientFailure(AppStrings.invalidGender)],
     );
 
     blocTest(
@@ -159,7 +156,8 @@ void main() {
             gender: client.gender,
             email: client.email,
             address: client.address,
-            phoneNumber: client.phoneNumber))).called(1);
+            phoneNumber: client.phoneNumber,
+            avatar: client.avatar))).called(1);
       },
     );
 
@@ -446,8 +444,8 @@ void main() {
     }
 
     void arrangeClientMeasurementEditFailure() {
-      when(() => mockEditClientMeasurements(any())).thenAnswer((_) async =>
-          const Left(LocalStorageFailure(AppStrings.localStorageFailure)));
+      when(() => mockEditClientMeasurements(any()))
+          .thenAnswer((_) async => const Left(LocalStorageFailure()));
     }
 
     blocTest(
@@ -483,5 +481,18 @@ void main() {
                   EditMeasurementParams(id: id, measurements: measurements)))
               .called(1);
         });
+  });
+
+  group('ClientReset', () {
+    // void arrangeClientReset()
+    blocTest(
+      'should emit [ClientLoading, ClientInitial] when client reset successful',
+      build: () {
+        return bloc;
+      },
+      act: (bloc) => bloc.add(ClientReset()),
+      expect: () => [ClientLoading(), ClientInitial()],
+      verify: (_) {},
+    );
   });
 }
