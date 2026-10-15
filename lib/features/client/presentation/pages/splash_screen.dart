@@ -11,33 +11,49 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  // declare timer && brandhold duration
+  static const _brandholdDuration = Duration(seconds: 2);
+  Timer? _timer;
+
   @override
   void initState() {
-    Timer(
-      const Duration(seconds: 5),
-      () => Navigator.push(context, const ClientsListPage().route()),
-    );
     super.initState();
+    _timer = Timer(_brandholdDuration, _openHome);
+  }
+
+  // open home
+  void _openHome() {
+    if (!mounted) return;
+    Navigator.pushReplacement(context, const ClientsListPage().route());
+  }
+
+  // dispose timer
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
-      extendBody: true,
-      extendBodyBehindAppBar: true,
-      body: Expanded(
-        child: Container(color: Colors.white, child: Expanded(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SizedBox(width: size.width,),
-              Image.asset("assets/images/needle.png"),
-              const Text("Tailor Made", style: TextStyle(fontSize: 100, color: Colors.black, fontFamily: "Courier", fontWeight: FontWeight.bold))
-            ],
+      backgroundColor: Colors.white,
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SizedBox(width: size.width),
+          Image.asset("assets/images/needle.png"),
+          const Text(
+            "Tailor Made",
+            style: TextStyle(
+              fontSize: 100,
+              color: Colors.black,
+              fontFamily: "Courier",
+              fontWeight: FontWeight.bold,
+            ),
           ),
-        ),
-        ),
+        ],
       ),
     );
   }

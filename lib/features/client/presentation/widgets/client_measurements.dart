@@ -83,93 +83,83 @@ class ClientMeasurementsState extends State<ClientMeasurements> {
           }
         },
         builder: (context, state) {
-          return SizedBox(
-            height: size.height,
-            width: size.width,
-            child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      IconButton(
-                        icon: const Icon(Icons.close),
-                        onPressed: widget.close,
-                      ),
-                      Visibility(
-                        visible: !edit,
-                        child: IconButton(
-                          icon: const Icon(Icons.edit_outlined),
-                          onPressed: () {
-                            edit = !edit;
-                            resetMeasurements();
-                            setState(() {});
+                  IconButton(
+                    icon: const Icon(Icons.close),
+                    onPressed: widget.close,
+                  ),
+                  Visibility(
+                    visible: !edit,
+                    child: IconButton(
+                      icon: const Icon(Icons.edit_outlined),
+                      onPressed: () {
+                        edit = !edit;
+                        resetMeasurements();
+                        setState(() {});
+                      },
+                    ),
+                  ),
+                ],
+              ),
+              Expanded(
+                child: (!edit)
+                    ? ListView.separated(
+                        itemBuilder: (context, index) {
+                          return ListTile(
+                            title: Text(keys[index]),
+                            subtitle: Text(measurements?[keys[index]]),
+                          );
+                        },
+                        separatorBuilder: (context, index) {
+                          return Divider(
+                            indent: size.width * 0.04,
+                            endIndent: size.width * 0.04,
+                          );
+                        },
+                        itemCount: keys.length,
+                      )
+                    : Form(
+                        child: ListView.builder(
+                          itemCount: keys.length,
+                          itemBuilder: (contex, index) {
+                            return FormInput(
+                              label: keys[index],
+                              controller: controllers[index],
+                            );
                           },
                         ),
                       ),
+              ),
+              Visibility(
+                visible: edit,
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 12, right: 12),
+                  child: Row(
+                    spacing: 10,
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {
+                          edit = !edit;
+                          resetMeasurements();
+                          setState(() {});
+                        },
+                        child: const Text("Discard"),
+                      ),
+                      ElevatedButton(
+                        onPressed: editMeasurements,
+                        child: const Text("Save"),
+                      ),
                     ],
                   ),
-                  (!edit)
-                      ? SizedBox(
-                          height: size.height * 0.85,
-                          width: size.width,
-                          child: ListView.separated(
-                            itemBuilder: (context, index) {
-                              return ListTile(
-                                title: Text(keys[index]),
-                                subtitle: Text(measurements?[keys[index]]),
-                              );
-                            },
-                            separatorBuilder: (context, index) {
-                              // (!edit){}
-                              return Visibility(
-                                visible: !edit,
-                                child: Divider(
-                                  indent: size.width * 0.04,
-                                  endIndent: size.width * 0.04,
-                                ),
-                              );
-                            },
-                            itemCount: keys.length,
-                          ),
-                        )
-                      : Form(
-                          child: SizedBox(
-                            height: size.height * 0.85,
-                            child: ListView.builder(
-                              itemCount: keys.length,
-                              itemBuilder: (contex, index) {
-                                return FormInput(
-                                  label: keys[index],
-                                  controller: controllers[index],
-                                );
-                              },
-                            ),
-                          ),
-                        ),
-                  Visibility(
-                    visible: edit,
-                    child: Row(
-                        spacing: 10,
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          ElevatedButton(
-                            onPressed: () {
-                              edit = !edit;
-                              resetMeasurements();
-                              setState(() {});
-                            },
-                            child: const Text("Discard"),
-                          ),
-                          ElevatedButton(
-                              onPressed: () {
-                                editMeasurements();
-                              },
-                              child: const Text("Save"))
-                        ]),
-                  ),
-                ]),
+                ),
+              ),
+            ],
           );
         });
   }
