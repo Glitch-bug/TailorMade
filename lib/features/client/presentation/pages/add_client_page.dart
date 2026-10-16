@@ -139,7 +139,6 @@ class _AddClientPageState extends State<AddClientPage> {
                                 controller: emailController,
                                 label: "Email",
                                 hintText: "AnneAtoubi@gmail.com",
-                                validator: AppValidators.requiredField,
                               ),
                             )
                           ],

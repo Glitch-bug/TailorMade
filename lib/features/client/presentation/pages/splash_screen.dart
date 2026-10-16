@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tailor_made/core/theme/size_config.dart';
 import 'package:tailor_made/features/client/presentation/pages/clients_list_page.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -18,7 +20,9 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    _timer = Timer(_brandholdDuration, _openHome);
+    WidgetsBinding.instance.addPostFrameCallback((dur) {
+      _timer = Timer(_brandholdDuration, _openHome);
+    });
   }
 
   // open home
@@ -32,22 +36,26 @@ class _SplashScreenState extends State<SplashScreen> {
   void dispose() {
     _timer?.cancel();
     super.dispose();
-  }
+  } 
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
+    final size = context.watch<SizeConfigCubit>().state;
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          SizedBox(width: size.width),
-          Image.asset("assets/images/needle.png"),
-          const Text(
+          SizedBox(width: size.screenWidth),
+          Image.asset(
+            "assets/images/needle.png",
+            width: 11.69 * size.imageSizeMultiplier,
+          ),
+          Text(
             "Tailor Made",
             style: TextStyle(
-              fontSize: 100,
+              fontSize: 10 * size.textMultiplier,
               color: Colors.black,
               fontFamily: "Courier",
               fontWeight: FontWeight.bold,

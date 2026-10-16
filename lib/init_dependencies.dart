@@ -1,6 +1,7 @@
 import 'package:get_it/get_it.dart';
 import 'package:hive_ce_flutter/hive_ce_flutter.dart';
 import 'package:tailor_made/core/constants/enums.dart';
+import 'package:tailor_made/core/theme/size_config.dart';
 import 'package:tailor_made/core/utils/input_converter.dart';
 import 'package:tailor_made/features/client/data/models/client_model.dart';
 import 'package:tailor_made/features/client/data/datasources/client_local_datasource.dart';
@@ -19,7 +20,6 @@ import 'package:uuid/uuid.dart';
 final sl = GetIt.instance;
 
 Future<void> initDependencies() async {
-  // String hivePath = (await getApplicationDocumentsDirectory()).path;
   await Hive.initFlutter();
 
   Hive.registerAdapter(GenderAdapter());
@@ -32,6 +32,7 @@ Future<void> initDependencies() async {
 
   sl.registerLazySingleton(() => uuid);
   sl.registerLazySingleton(() => InputConverter());
+  sl.registerSingleton(SizeConfigCubit());
 
   _initClient();
 }
